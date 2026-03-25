@@ -4,6 +4,8 @@
 export function Sidebar(_props: {
   isOpen: boolean;
   onToggle: () => void;
+  isCollapsed: boolean;
+  onCollapse: () => void;
 }) {
   return null;
 }

@@ -4,7 +4,7 @@ export default function SettingsScreen() {
   return (
     <ScrollView
       className="flex-1 bg-background"
-      contentContainerStyle={{ padding: 20, gap: 16 }}
+      contentContainerStyle={{ padding: 20, gap: 16, maxWidth: 896, width: '100%', marginHorizontal: 'auto' }}
       contentInsetAdjustmentBehavior="automatic"
     >
       <View className="bg-muted rounded-xl p-4" style={{ borderCurve: 'continuous' }}>

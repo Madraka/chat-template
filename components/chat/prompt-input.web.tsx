@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, type ReactNode, isValidElement } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -11,28 +11,42 @@ import { useChatContext } from "./chat-context";
 import { useConversationContext } from "./conversation";
 
 /**
- * Root container for the message composer. Card-style design matching Vercel
- * chatbot aesthetics — centered max-w-4xl with rounded border and shadow.
+ * Root container for the message composer matching Vercel chatbot design.
+ * Centered max-w-4xl card with rounded-2xl border/shadow.
+ * Collects PromptInputAction children and renders them in a footer row.
  */
 export function PromptInput({ children }: { children: ReactNode }) {
   const { onPromptInputLayout } = useConversationContext();
 
+  // Separate action buttons from body (which contains textarea + submit)
+  const actions: ReactNode[] = [];
+  let body: ReactNode = null;
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && (child.type as any) === PromptInputAction) {
+      actions.push(child);
+    } else if (
+      isValidElement(child) &&
+      (child.type as any) === PromptInputBody
+    ) {
+      body = child;
+    }
+  });
+
   return (
     <View
       onLayout={onPromptInputLayout}
-      className="absolute bottom-0 left-0 right-0 z-10"
+      className="sticky bottom-0 z-10 mx-auto flex w-full max-w-4xl gap-2 bg-background px-2 pb-3 md:px-4 md:pb-4"
     >
-      <View className="mx-auto w-full max-w-4xl px-4 pb-4">
-        <View className="rounded-2xl border border-border/30 bg-card shadow-composer transition-shadow focus-within:shadow-composer-focus">
-          {children}
-        </View>
+      <View className="flex w-full flex-col rounded-2xl border border-border/30 bg-card/70 shadow-composer transition-shadow duration-300 focus-within:shadow-composer-focus">
+        {body}
       </View>
     </View>
   );
 }
 
 /**
- * A button for actions (e.g. attachments) placed in the composer footer.
+ * Action button (e.g. attachments) in the composer footer.
  */
 export function PromptInputAction({
   children,
@@ -44,7 +58,7 @@ export function PromptInputAction({
   return (
     <Pressable
       onPress={onPress}
-      className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/40 hover:bg-accent"
+      className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/40 transition-colors hover:bg-accent"
     >
       {children}
     </Pressable>
@@ -52,15 +66,47 @@ export function PromptInputAction({
 }
 
 /**
- * Container for the textarea and submit button. On web, this is the main
- * content area of the card with a footer row below.
+ * Container wrapping the textarea and the footer row with submit + tools.
+ * On web, PromptInputBody renders the textarea children PLUS a footer row.
  */
 export function PromptInputBody({ children }: { children: ReactNode }) {
-  return <View className="flex flex-col">{children}</View>;
+  // Separate textarea from submit button
+  const textarea: ReactNode[] = [];
+  let submit: ReactNode = null;
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && (child.type as any) === PromptInputSubmit) {
+      submit = child;
+    } else {
+      textarea.push(child);
+    }
+  });
+
+  return (
+    <View className="flex flex-col">
+      {/* Textarea area */}
+      {textarea}
+      {/* Footer row: tools on left, submit on right */}
+      <View className="flex flex-row items-center justify-between px-3 pb-3">
+        <View className="flex flex-row items-center gap-1">
+          {/* Attachments button */}
+          <Pressable className="flex h-7 w-7 items-center justify-center rounded-lg border border-border/40 transition-colors hover:bg-accent">
+            <Text className="text-[13px] text-muted-foreground">📎</Text>
+          </Pressable>
+          {/* Model selector mock */}
+          <Pressable className="flex h-7 flex-row items-center gap-1.5 rounded-lg px-2 transition-colors hover:bg-accent">
+            <Text className="text-[12px] text-muted-foreground">GPT-4o</Text>
+          </Pressable>
+        </View>
+        {submit}
+      </View>
+    </View>
+  );
 }
 
 /**
- * Auto-growing text input for composing messages.
+ * Auto-growing text input matching Vercel chatbot's textarea.
+ * resize: none removes the browser resize handle.
  */
 export function PromptInputTextarea({
   placeholder = "Message...",
@@ -74,12 +120,12 @@ export function PromptInputTextarea({
   return (
     <TextInput
       nativeID="composer"
-      className="w-full bg-transparent px-4 pt-3.5 pb-2 text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground/50 outline-none"
-      style={{ maxHeight: 200 }}
+      className="min-h-24 w-full bg-transparent px-4 pt-3.5 pb-1.5 text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground/35 outline-none"
+      style={{ maxHeight: 200, resize: "none" } as any}
       value={input}
       onChangeText={setInput}
       placeholder={placeholder}
-      placeholderTextColor="oklch(0.55 0 0 / 0.5)"
+      placeholderTextColor="var(--app-muted-foreground)"
       multiline
       maxLength={maxLength}
       onKeyPress={(e) => {
@@ -96,38 +142,33 @@ export function PromptInputTextarea({
 }
 
 /**
- * Submit button — dark rounded button when active, muted when disabled.
+ * Submit button matching Vercel chatbot's send/stop button.
  */
 export function PromptInputSubmit() {
   const { input, isGenerating, onSend } = useChatContext();
   const disabled = !input.trim() || isGenerating;
 
   return (
-    <View className="flex flex-row items-center justify-end px-3 py-2">
-      <Pressable
-        onPress={onSend}
-        disabled={disabled}
-        className={`flex h-7 w-7 items-center justify-center rounded-xl transition-colors ${
-          disabled
-            ? "bg-muted cursor-not-allowed"
-            : "bg-foreground hover:bg-foreground/90"
-        }`}
-      >
-        {isGenerating ? (
-          <ActivityIndicator
-            size="small"
-            color={disabled ? "oklch(0.55 0 0)" : "oklch(0.985 0 0)"}
-          />
-        ) : (
-          <Text
-            className={`text-xs font-bold ${
-              disabled ? "text-muted-foreground/40" : "text-background"
-            }`}
-          >
-            ↑
-          </Text>
-        )}
-      </Pressable>
-    </View>
+    <Pressable
+      onPress={onSend}
+      disabled={disabled}
+      className={`flex h-7 w-7 items-center justify-center rounded-xl transition-all duration-200 ${
+        disabled
+          ? "bg-muted cursor-not-allowed"
+          : "bg-foreground hover:opacity-85 active:scale-95"
+      }`}
+    >
+      {isGenerating ? (
+        <ActivityIndicator size="small" color="var(--app-background)" />
+      ) : (
+        <Text
+          className={`text-sm font-bold ${
+            disabled ? "text-muted-foreground/25" : "text-background"
+          }`}
+        >
+          ↑
+        </Text>
+      )}
+    </Pressable>
   );
 }

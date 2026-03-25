@@ -56,16 +56,13 @@ export function Conversation({
 
   const updateIsAtBottom = useCallback(() => {
     const maxScrollY =
-      totalContentHeight.current -
-      scrollViewHeight.current +
-      composerHeight +
-      16;
+      totalContentHeight.current - scrollViewHeight.current;
     if (maxScrollY <= 0) {
       setIsAtBottom(true);
       return;
     }
     setIsAtBottom(maxScrollY - scrollY.current <= SCROLL_THRESHOLD);
-  }, [composerHeight]);
+  }, []);
 
   const onScrollViewLayout = useCallback(
     (e: LayoutChangeEvent) => {
@@ -88,9 +85,7 @@ export function Conversation({
     (_width: number, height: number) => {
       const wasAtBottom =
         totalContentHeight.current -
-          scrollViewHeight.current +
-          composerHeight +
-          16 -
+          scrollViewHeight.current -
           scrollY.current <=
         SCROLL_THRESHOLD;
       const heightIncreased = height > lastContentHeight.current;
@@ -105,7 +100,7 @@ export function Conversation({
         });
       }
     },
-    [composerHeight, updateIsAtBottom]
+    [updateIsAtBottom]
   );
 
   const scrollToBottom = useCallback(() => {
@@ -126,30 +121,49 @@ export function Conversation({
 
   return (
     <ConversationCtx value={contextValue}>
-      <View className="flex-1 bg-background relative">
+      <View className="relative flex-1 bg-background">
+        {/* Empty state overlay */}
+        {messages.length === 0 && emptyState && (
+          <View className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+            {emptyState}
+          </View>
+        )}
+
         {/* Message list */}
-        <View className="flex-1">
-          <LegendList
-            ref={listRef}
-            data={messages}
-            renderItem={renderMessage as any}
-            keyExtractor={(item) => (item as ChatMessage).id}
-            contentContainerStyle={{
-              paddingBottom: composerHeight + 16,
-              maxWidth: 896,
-              width: "100%",
-              marginHorizontal: "auto",
-              paddingHorizontal: 16,
-              paddingTop: 24,
-            }}
-            estimatedItemSize={80}
-            onLayout={onScrollViewLayout}
-            onScroll={onScroll}
-            scrollEventThrottle={16}
-            onContentSizeChange={onContentSizeChange}
-            ListEmptyComponent={emptyState}
-          />
-        </View>
+        <LegendList
+          ref={listRef}
+          data={messages}
+          renderItem={renderMessage as any}
+          keyExtractor={(item) => (item as ChatMessage).id}
+          contentContainerStyle={{
+            paddingBottom: composerHeight + 16,
+            maxWidth: 896,
+            width: "100%",
+            marginHorizontal: "auto",
+            paddingHorizontal: 8,
+            paddingTop: 24,
+            gap: 20,
+          }}
+          style={{ flex: 1 }}
+          estimatedItemSize={80}
+          onLayout={onScrollViewLayout}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          onContentSizeChange={onContentSizeChange}
+        />
+
+        {/* Scroll to bottom */}
+        {!isAtBottom && messages.length > 0 && (
+          <Pressable
+            onPress={scrollToBottom}
+            className="absolute left-1/2 z-10 flex -translate-x-1/2 h-7 flex-row items-center justify-center rounded-full border border-border/50 bg-card/90 px-3 shadow-float backdrop-blur-lg transition-all duration-200"
+            style={{ bottom: composerHeight + 16 }}
+          >
+            <Text className="text-xs text-muted-foreground leading-none">
+              ↓
+            </Text>
+          </Pressable>
+        )}
 
         {children}
       </View>
@@ -158,23 +172,9 @@ export function Conversation({
 }
 
 export function ConversationScrollButton() {
-  const { scrollToBottom } = useConversationContext();
-  // The button is rendered here; visibility is controlled via CSS/state in a simplified way.
-  // For full implementation, this would track isAtBottom from context.
-
-  return (
-    <View
-      pointerEvents="box-none"
-      className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10"
-    >
-      <Pressable
-        onPress={scrollToBottom}
-        className="flex h-7 items-center rounded-full border border-border/50 bg-card/90 px-3 shadow-float backdrop-blur-lg"
-      >
-        <Text className="text-[10px] text-muted-foreground">↓</Text>
-      </Pressable>
-    </View>
-  );
+  // Scroll button is now rendered inline in Conversation with isAtBottom state.
+  // This component is kept for API compatibility with native.
+  return null;
 }
 
 export function ConversationEmptyState({
@@ -186,12 +186,14 @@ export function ConversationEmptyState({
   icon?: string;
 }) {
   return (
-    <View className="flex-1 items-center justify-center pt-32">
-      <Text className="text-2xl font-medium text-foreground mb-2">
+    <View className="flex flex-col items-center px-4">
+      <Text className="text-center font-semibold text-2xl tracking-tight text-foreground md:text-3xl">
         {title}
       </Text>
       {description && (
-        <Text className="text-sm text-muted-foreground">{description}</Text>
+        <Text className="mt-3 text-center text-muted-foreground/80 text-sm">
+          {description}
+        </Text>
       )}
     </View>
   );

@@ -3,6 +3,8 @@
 @import "tailwindcss/utilities.css";
 
 @import "uniwind";
+@import "./sf.css";
+
 
 /* ─── Design Tokens ─── */
 
@@ -96,15 +98,5 @@
     --font-serif: ui-serif;
     --font-sans: system-ui;
     --font-rounded: ui-rounded;
-  }
-}
-
-
-@layer theme {
-  @theme {
-    /* Fonts */
-    --font-rounded: "SF Pro Rounded", "Hiragino Maru Gothic ProN", Meiryo,
-      "MS PGothic", sans-serif;
-
   }
 }
