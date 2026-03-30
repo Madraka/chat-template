@@ -213,7 +213,7 @@ export function DrawerLayout({
     return minmax(translationX.value, -drawerWidth, 0);
   });
 
-  const CORNERS = 48;
+  const CORNERS = 56;
   const contentAnimatedStyle = useAnimatedStyle(() => {
     return {
       zIndex: translateX.value === -drawerWidth ? 0 : 2,
@@ -232,9 +232,7 @@ export function DrawerLayout({
 
   const drawerAnimatedStyle = useAnimatedStyle(() => {
     const p =
-      drawerWidth === 0
-        ? 0
-        : (translateX.value + drawerWidth) / drawerWidth;
+      drawerWidth === 0 ? 0 : (translateX.value + drawerWidth) / drawerWidth;
     return {
       // Force commit to shadow tree for pressables
       zIndex: translateX.value === -drawerWidth ? -1 : 0,
@@ -355,6 +353,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentCard: {
+    overflow: "hidden",
     boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.15)",
     borderColor: "rgba(0, 0, 0, 0.15)",
     borderWidth: StyleSheet.hairlineWidth,
