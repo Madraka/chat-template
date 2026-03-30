@@ -1,7 +1,7 @@
 import { DrawerLayout } from "@/components/drawer-layout";
-import { Slot, usePathname, useRouter } from "expo-router";
+import { Slot, useGlobalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "../global.css";
 import "../utils/css-variables";
@@ -58,20 +58,17 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
 
 export default function RootLayout() {
   const router = useRouter();
-  const pathname = usePathname();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const params = useGlobalSearchParams<{ drawer?: string }>();
+  const drawerOpen = params.drawer === "open";
 
-  // Close drawer when the route changes
-  const prevPathname = useRef(pathname);
-  useEffect(() => {
-    if (prevPathname.current !== pathname) {
-      prevPathname.current = pathname;
-      setDrawerOpen(false);
-    }
-  }, [pathname]);
-
-  const onOpen = useCallback(() => setDrawerOpen(true), []);
-  const onClose = useCallback(() => setDrawerOpen(false), []);
+  const onOpen = useCallback(
+    () => router.setParams({ drawer: "open" }),
+    [router],
+  );
+  const onClose = useCallback(
+    () => router.setParams({ drawer: undefined }),
+    [router],
+  );
 
   return (
     <KeyboardProvider>
@@ -83,7 +80,6 @@ export default function RootLayout() {
           drawerContent={
             <DrawerContent
               onNavigate={(path) => {
-                setDrawerOpen(false);
                 router.replace(path as any);
               }}
             />
