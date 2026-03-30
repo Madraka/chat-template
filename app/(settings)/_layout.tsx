@@ -1,5 +1,25 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 export default function Layout() {
-  return <Stack />;
+  const router = useRouter();
+
+  return (
+    <Stack>
+      <Stack.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+        }}
+      >
+        <Stack.Toolbar placement="left">
+          <Stack.Toolbar.Button
+            icon={"line.horizontal.3"}
+            onPress={() => {
+              router.setParams({ drawer: "open" });
+            }}
+          />
+        </Stack.Toolbar>
+      </Stack.Screen>
+    </Stack>
+  );
 }
