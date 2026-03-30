@@ -19,6 +19,14 @@ export default function Layout() {
             }}
           />
         </Stack.Toolbar>
+        <Stack.Toolbar placement="right">
+          <Stack.Toolbar.Button
+            icon={"plus"}
+            onPress={() => {
+              // TODO: New app
+            }}
+          />
+        </Stack.Toolbar>
       </Stack.Screen>
     </Stack>
   );
