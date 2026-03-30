@@ -213,7 +213,7 @@ export function DrawerLayout({
     return minmax(translationX.value, -drawerWidth, 0);
   });
 
-  const CORNERS = 56;
+  const CORNERS = 53;
   const contentAnimatedStyle = useAnimatedStyle(() => {
     return {
       zIndex: translateX.value === -drawerWidth ? 0 : 2,
@@ -355,8 +355,8 @@ const styles = StyleSheet.create({
   contentCard: {
     overflow: "hidden",
     boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.15)",
-    borderColor: "rgba(0, 0, 0, 0.15)",
-    borderWidth: StyleSheet.hairlineWidth,
+    // borderColor: "rgba(0, 0, 0, 0.15)",
+    // borderWidth: StyleSheet.hairlineWidth,
   },
   contentInner: {
     flex: 1,
