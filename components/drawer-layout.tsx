@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   overlay: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "rgba(21, 21, 21, 0.5)",
   },
   pressable: {
     flex: 1,

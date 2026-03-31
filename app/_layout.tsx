@@ -13,7 +13,9 @@ import {
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView as XSafeAreaView } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
+const SafeAreaView = withUniwind(XSafeAreaView);
 
 function ThemeProvider(props: { children: React.ReactNode }) {
   // TODO: Enable other modes
@@ -90,18 +92,17 @@ function DrawerChatItem({
 function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
   return (
     <SafeAreaView
-      style={{ flex: 1 }}
-      className="bg-background"
+      className="flex-1 bg-background"
       edges={["top", "bottom", "left"]}
     >
       {/* Header */}
-      <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
+      <View className="px-4 pt-2 pb-3">
         <Text className="text-[28px] font-bold text-foreground">Chat</Text>
       </View>
 
       {/* Nav + Chat history */}
       <ScrollView
-        style={{ flex: 1 }}
+        className="flex-1"
         contentContainerStyle={{ paddingBottom: 8 }}
       >
         <DrawerNavItem label="Chats" onPress={() => onNavigate("/")} />
@@ -141,10 +142,7 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
           onPress={() => onNavigate("/")}
           className="w-10 h-10 rounded-full bg-accent active:bg-muted items-center justify-center"
         >
-          <Text
-            className="text-[22px] font-light text-foreground"
-            style={{ marginTop: -1 }}
-          >
+          <Text className="text-[22px] font-light text-foreground -mt-px">
             +
           </Text>
         </Pressable>
