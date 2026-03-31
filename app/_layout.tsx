@@ -55,15 +55,9 @@ function DrawerNavItem({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => ({
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        marginHorizontal: 8,
-        borderRadius: 10,
-        backgroundColor: pressed ? "rgba(0,0,0,0.05)" : "transparent",
-      })}
+      className="px-4 py-3 mx-2 rounded-[10px] active:bg-muted"
     >
-      <Text style={{ fontSize: 16 }}>{label}</Text>
+      <Text className="text-base text-foreground">{label}</Text>
     </Pressable>
   );
 }
@@ -80,21 +74,11 @@ function DrawerChatItem({
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => ({
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        marginHorizontal: 8,
-        borderRadius: 10,
-        backgroundColor: active
-          ? "rgba(0,0,0,0.06)"
-          : pressed
-            ? "rgba(0,0,0,0.03)"
-            : "transparent",
-      })}
+      className={`px-4 py-2.5 mx-2 rounded-[10px] ${active ? "bg-muted" : "active:bg-accent"}`}
     >
       <Text
         numberOfLines={1}
-        style={{ fontSize: 15, color: active ? "#000" : "rgba(0,0,0,0.7)" }}
+        className={`text-[15px] ${active ? "text-foreground" : "text-muted-foreground"}`}
       >
         {title}
       </Text>
@@ -104,10 +88,10 @@ function DrawerChatItem({
 
 function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
   return (
-    <SafeAreaView className="flex-1 bg-background" edges={["top", "bottom", "left"]}>
+    <SafeAreaView style={{ flex: 1 }} className="bg-sf-bg" edges={["top", "bottom", "left"]}>
       {/* Header */}
       <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }}>
-        <Text style={{ fontSize: 28, fontWeight: "700" }}>Chat</Text>
+        <Text className="text-[28px] font-bold text-foreground">Chat</Text>
       </View>
 
       {/* Nav + Chat history */}
@@ -122,16 +106,7 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
         />
 
         {/* Recents */}
-        <Text
-          style={{
-            fontSize: 13,
-            fontWeight: "600",
-            color: "rgba(0,0,0,0.4)",
-            paddingHorizontal: 24,
-            paddingTop: 20,
-            paddingBottom: 6,
-          }}
-        >
+        <Text className="text-[13px] font-semibold text-muted-foreground px-6 pt-5 pb-1.5">
           Recents
         </Text>
         {MOCK_CHATS.map((chat) => (
@@ -146,51 +121,20 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
 
       {/* Footer */}
       <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          borderTopWidth: StyleSheet.hairlineWidth,
-          borderTopColor: "rgba(0,0,0,0.1)",
-        }}
+        className="flex-row items-center px-4 py-3 border-t border-border"
+        style={{ borderTopWidth: StyleSheet.hairlineWidth }}
       >
-        <Pressable
-          style={({ pressed }) => ({
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 10,
-            flex: 1,
-            paddingVertical: 4,
-            opacity: pressed ? 0.6 : 1,
-          })}
-        >
-          <View
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              backgroundColor: "rgba(0,0,0,0.08)",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ fontSize: 13, fontWeight: "600" }}>EB</Text>
+        <Pressable className="flex-row items-center gap-2.5 flex-1 py-1 active:opacity-60">
+          <View className="w-8 h-8 rounded-full bg-muted items-center justify-center">
+            <Text className="text-[13px] font-semibold text-foreground">EB</Text>
           </View>
-          <Text style={{ fontSize: 15 }}>Evan Bacon</Text>
+          <Text className="text-[15px] text-foreground">Evan Bacon</Text>
         </Pressable>
         <Pressable
           onPress={() => onNavigate("/")}
-          style={({ pressed }) => ({
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: pressed ? "rgba(0,0,0,0.12)" : "rgba(0,0,0,0.06)",
-            alignItems: "center",
-            justifyContent: "center",
-          })}
+          className="w-10 h-10 rounded-full bg-accent active:bg-muted items-center justify-center"
         >
-          <Text style={{ fontSize: 22, fontWeight: "300", marginTop: -1 }}>
+          <Text className="text-[22px] font-light text-foreground" style={{ marginTop: -1 }}>
             +
           </Text>
         </Pressable>
