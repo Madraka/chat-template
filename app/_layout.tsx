@@ -11,18 +11,12 @@ import {
   DefaultTheme,
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function ThemeProvider(props: { children: React.ReactNode }) {
-  const colorScheme = useColorScheme();
+  // TODO: Enable other modes
+  const colorScheme = "dark"; // useColorScheme();
   return (
     <RNTheme value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       {props.children}
