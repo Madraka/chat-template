@@ -4,7 +4,6 @@ import { GlassContainer, GlassView } from "expo-glass-effect";
 import type { ReactNode } from "react";
 import { ActivityIndicator, Pressable, TextInput } from "react-native";
 import Animated from "react-native-reanimated";
-import { useCSSVariable } from "uniwind";
 
 import { useChatContext } from "./chat-context";
 import { useConversationContext } from "./conversation";
@@ -100,13 +99,13 @@ export function PromptInputTextarea({
   maxLength?: number;
 }) {
   const { input, setInput } = useChatContext();
-  const placeholderColor = useCSSVariable("--sf-text-placeholder") as string;
 
   return (
     <TextInput
       nativeID="composer"
+      cursorColor={"white"}
+      selectionColor={"white"}
       className="flex-1 pl-4 pr-2 py-2.5 text-base text-foreground max-h-25"
-      placeholderTextColor={placeholderColor}
       value={input}
       onChangeText={setInput}
       placeholder={placeholder}
