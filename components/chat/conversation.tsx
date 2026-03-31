@@ -280,7 +280,7 @@ export function ConversationScrollButton() {
           opacity: pressed ? 0.7 : 1,
         })}
       >
-        <SymbolImage name="chevron.down" size={16} className="tint-sf-text" />
+        <SymbolImage name="chevron.down" className="text-white text-base" />
       </Pressable>
     </Animated.View>
   );

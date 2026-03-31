@@ -223,6 +223,7 @@ export function ChatMarkdown({ children }: { children: string }) {
 const fullStyles = StyleSheet.create({
   orderedBullet: {
     fontFamily: Platform.select({ ios: "ui-monospace", default: "monospace" }),
+    fontWeight: "normal",
   },
   unorderedBullet: {
     fontSize: 18,
