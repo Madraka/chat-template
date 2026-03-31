@@ -23,7 +23,7 @@ export default function SettingsLayout() {
         </Stack.Toolbar>
         <Stack.Toolbar placement="right">
           <Stack.Toolbar.Menu icon="info.circle">
-            <Stack.Toolbar.MenuAction>
+            <Stack.Toolbar.MenuAction icon={"app"}>
               {`${Application.applicationName} v${Application.nativeApplicationVersion} (${Application.nativeBuildVersion})`}
             </Stack.Toolbar.MenuAction>
             <Stack.Toolbar.Menu inline>
