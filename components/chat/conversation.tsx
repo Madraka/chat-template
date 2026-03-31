@@ -1,4 +1,3 @@
-import { platformColor } from "@/components/platform-color";
 import { LegendList, LegendListRef } from "@legendapp/list";
 import { SymbolView } from "expo-symbols";
 import {
@@ -226,12 +225,7 @@ export function Conversation({
 
   return (
     <ConversationCtx value={contextValue}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: platformColor("systemBackground"),
-        }}
-      >
+      <View className="flex-1 bg-sf-bg">
         <KeyboardGestureArea
           interpolator="ios"
           showOnSwipeUp
@@ -253,15 +247,7 @@ export function Conversation({
             onScroll={onScroll}
             scrollEventThrottle={16}
             onContentSizeChange={onContentSizeChange}
-            ListEmptyComponent={
-              emptyState
-              // ? () => (
-              //     <Animated.View style={footerSpacerStyle}>
-              //       {emptyState}
-              //     </Animated.View>
-              //   )
-              // : undefined
-            }
+            ListEmptyComponent={emptyState}
             ListFooterComponent={<Animated.View style={footerSpacerStyle} />}
           />
         </KeyboardGestureArea>
@@ -283,13 +269,8 @@ export function ConversationScrollButton() {
       <Pressable
         onPress={scrollToBottom}
         hitSlop={8}
+        className="w-10 h-10 rounded-full bg-sf-bg-2 justify-center items-center"
         style={({ pressed }) => ({
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          backgroundColor: platformColor("secondarySystemBackground"),
-          justifyContent: "center",
-          alignItems: "center",
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.15,
@@ -300,7 +281,7 @@ export function ConversationScrollButton() {
         <SymbolView
           name="chevron.down"
           size={16}
-          tintColor={platformColor("label")}
+          className="tint-sf-text"
           weight="semibold"
         />
       </Pressable>
@@ -318,37 +299,17 @@ export function ConversationEmptyState({
   icon?: ComponentProps<typeof SymbolView>["name"];
 }) {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: 100,
-      }}
-    >
+    <View className="flex-1 justify-center items-center pt-24">
       <SymbolView
         name={icon}
         size={48}
-        tintColor={platformColor("tertiaryLabel")}
-        style={{ marginBottom: 16 }}
+        className="tint-sf-text-3 mb-4"
       />
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "600",
-          color: platformColor("label"),
-          marginBottom: 8,
-        }}
-      >
+      <Text className="text-xl font-semibold text-sf-text mb-2">
         {title}
       </Text>
       {description && (
-        <Text
-          style={{
-            fontSize: 14,
-            color: platformColor("secondaryLabel"),
-          }}
-        >
+        <Text className="text-sm text-sf-text-2">
           {description}
         </Text>
       )}

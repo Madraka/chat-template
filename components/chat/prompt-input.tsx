@@ -1,4 +1,3 @@
-import { platformColor } from "@/components/platform-color";
 import { TouchableGlass } from "@/components/touchable-glass";
 import { GlassContainer, GlassView } from "expo-glass-effect";
 import { SymbolView } from "expo-symbols";
@@ -120,19 +119,11 @@ export function PromptInputTextarea({
   return (
     <TextInput
       nativeID="composer"
-      style={{
-        flex: 1,
-        paddingLeft: 16,
-        paddingRight: 8,
-        paddingVertical: 10,
-        fontSize: 16,
-        maxHeight: 100,
-        color: platformColor("label"),
-      }}
+      className="flex-1 pl-4 pr-2 py-2.5 text-base text-sf-text max-h-[100px]"
+      placeholderTextColor="var(--sf-text-placeholder)"
       value={input}
       onChangeText={setInput}
       placeholder={placeholder}
-      placeholderTextColor={platformColor("placeholderText")}
       multiline
       maxLength={maxLength}
     />
@@ -152,9 +143,6 @@ export function PromptInputSubmit() {
   return (
     <Pressable
       style={({ pressed }) => ({
-        backgroundColor: disabled
-          ? platformColor("tertiarySystemFill")
-          : platformColor("systemBlue"),
         width: 34,
         height: 34,
         borderRadius: 17,
@@ -164,6 +152,7 @@ export function PromptInputSubmit() {
         opacity: pressed ? 0.7 : 1,
         margin: 5,
       })}
+      className={disabled ? "bg-sf-fill-3" : "bg-sf-blue"}
       onPress={onSend}
       disabled={disabled}
     >

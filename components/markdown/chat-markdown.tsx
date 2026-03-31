@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { platformColor } from "@/components/platform-color";
 import { StyleSheet, Text, View, Platform, Linking } from 'react-native';
 import { Markdown } from './index';
 import * as WebBrowser from 'expo-web-browser';
@@ -15,33 +14,33 @@ export const ChatMarkdown = memo(
       heading1: {
         fontSize: 24,
         fontWeight: 'bold' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       heading2: {
         fontSize: 20,
         lineHeight: 28,
         fontWeight: 'bold' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       heading3: {
         fontSize: 18,
         fontWeight: '600' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       heading4: {
         fontSize: 16,
         fontWeight: '600' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       heading5: {
         fontSize: 14,
         fontWeight: '600' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       heading6: {
         fontSize: 12,
         fontWeight: '600' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       paragraph: {
         fontSize: baseFontSize,
@@ -59,53 +58,53 @@ export const ChatMarkdown = memo(
         fontStyle: 'italic' as const,
       },
       text: {
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
         fontSize: baseFontSize,
         lineHeight: baseLineHeight,
       },
       thematicBreak: {
         flex: 1,
         height: 1,
-        backgroundColor: platformColor('separator'),
+        backgroundColor: 'var(--sf-border)',
         marginVertical: 8,
       },
       blockquote: {
-        backgroundColor: platformColor('tertiarySystemBackground'),
-        borderColor: platformColor('separator'),
+        backgroundColor: 'var(--sf-bg-3)',
+        borderColor: 'var(--sf-border)',
         borderLeftWidth: 4,
         paddingHorizontal: 8,
         marginVertical: 8,
       },
       codeContainer: {
-        backgroundColor: platformColor('tertiarySystemFill'),
+        backgroundColor: 'var(--sf-fill-3)',
         padding: 12,
         borderRadius: 8,
         marginVertical: 4,
       },
       codeText: {
         fontSize: isWeb ? 12 : 14,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
         fontFamily: Platform.select({ ios: 'Menlo', default: 'monospace' }),
       },
       inlineCode: {
         fontFamily: Platform.select({ ios: 'Menlo', default: 'monospace' }),
         paddingHorizontal: 4,
         fontSize: isWeb ? 12 : 15,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
         overflow: 'hidden' as const,
         borderRadius: 4,
-        backgroundColor: platformColor('tertiarySystemFill'),
+        backgroundColor: 'var(--sf-fill-3)',
       },
       link: {
         fontSize: baseFontSize,
-        color: platformColor('link'),
+        color: 'var(--sf-link)',
       },
       image: {
         width: '100%' as const,
         height: 200,
         aspectRatio: 16 / 9,
         resizeMode: 'cover' as const,
-        backgroundColor: platformColor('tertiarySystemFill'),
+        backgroundColor: 'var(--sf-fill-3)',
         borderRadius: 8,
         overflow: 'hidden' as const,
       },
@@ -117,7 +116,7 @@ export const ChatMarkdown = memo(
       },
       listBullet: {
         fontSize: 16,
-        color: platformColor('secondaryLabel'),
+        color: 'var(--sf-text-2)',
         fontVariant: ['tabular-nums' as const],
         marginRight: 8,
       },
@@ -132,34 +131,34 @@ export const ChatMarkdown = memo(
       table: {
         marginVertical: 8,
         borderWidth: 1,
-        borderColor: platformColor('separator'),
+        borderColor: 'var(--sf-border)',
         borderRadius: 8,
         overflow: 'hidden' as const,
       },
       tableRow: {
         flexDirection: 'row' as const,
         borderBottomWidth: 1,
-        borderBottomColor: platformColor('separator'),
+        borderBottomColor: 'var(--sf-border)',
       },
       tableHeaderRow: {
-        backgroundColor: platformColor('secondarySystemBackground'),
+        backgroundColor: 'var(--sf-bg-2)',
       },
       tableCell: {
         flex: 1,
         padding: 10,
         borderRightWidth: 1,
-        borderRightColor: platformColor('separator'),
+        borderRightColor: 'var(--sf-border)',
       },
       tableHeaderCell: {
-        backgroundColor: platformColor('secondarySystemBackground'),
+        backgroundColor: 'var(--sf-bg-2)',
       },
       tableCellText: {
         fontSize: 14,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
       tableHeaderCellText: {
         fontWeight: '600' as const,
-        color: platformColor('label'),
+        color: 'var(--sf-text)',
       },
     };
 

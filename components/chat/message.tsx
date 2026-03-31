@@ -1,5 +1,4 @@
 import { ChatMarkdown } from "@/components/markdown";
-import { platformColor } from "@/components/platform-color";
 import type { ReactNode } from "react";
 import { Text } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
@@ -23,15 +22,8 @@ export function Message({
       <Animated.View
         entering={FadeIn.duration(200)}
         exiting={FadeOut.duration(150)}
-        style={{
-          maxWidth: "80%",
-          padding: 12,
-          borderRadius: 18,
-          borderCurve: "continuous",
-          marginBottom: 8,
-          alignSelf: "flex-end",
-          backgroundColor: platformColor("systemBlue"),
-        }}
+        className="max-w-[80%] self-end rounded-2xl bg-sf-blue p-3 mb-2"
+        style={{ borderCurve: "continuous" }}
       >
         {typeof children === "string" ? (
           <Text
