@@ -231,6 +231,7 @@ function StackLayout() {
         name="index"
         options={{
           title: "Chat",
+          animation: "none",
         }}
       >
         <Stack.Toolbar placement="left">
@@ -282,6 +283,7 @@ function StackLayout() {
         name="chats"
         options={{
           title: "Chats",
+          animation: "none",
         }}
       >
         <Stack.Header transparent></Stack.Header>
@@ -290,6 +292,7 @@ function StackLayout() {
         name="settings"
         options={{
           title: "Settings",
+          animation: "none",
         }}
       >
         <Stack.Toolbar placement="left">
