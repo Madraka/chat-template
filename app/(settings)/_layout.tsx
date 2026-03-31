@@ -1,10 +1,16 @@
+import * as Application from "expo-application";
 import { Stack, useRouter } from "expo-router";
 
 export default function SettingsLayout() {
   const router = useRouter();
 
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerTransparent: true,
+        headerBackButtonDisplayMode: "minimal",
+      }}
+    >
       <Stack.Screen
         name="settings"
         options={{
@@ -13,15 +19,12 @@ export default function SettingsLayout() {
         }}
       >
         <Stack.Toolbar placement="left">
-          <Stack.Toolbar.Button
-            icon="xmark"
-            onPress={() => router.back()}
-          />
+          <Stack.Toolbar.Button icon="xmark" onPress={() => router.back()} />
         </Stack.Toolbar>
         <Stack.Toolbar placement="right">
           <Stack.Toolbar.Menu icon="info.circle">
             <Stack.Toolbar.MenuAction>
-              Claude v1.260323.4 (2355638143)
+              {`${Application.applicationName} v${Application.nativeApplicationVersion} (${Application.nativeBuildVersion})`}
             </Stack.Toolbar.MenuAction>
             <Stack.Toolbar.Menu inline>
               <Stack.Toolbar.MenuAction icon="doc.text">
@@ -32,9 +35,6 @@ export default function SettingsLayout() {
               </Stack.Toolbar.MenuAction>
               <Stack.Toolbar.MenuAction icon="arrow.up.forward.square">
                 Privacy Policy
-              </Stack.Toolbar.MenuAction>
-              <Stack.Toolbar.MenuAction icon="list.bullet.rectangle">
-                Licenses
               </Stack.Toolbar.MenuAction>
             </Stack.Toolbar.Menu>
             <Stack.Toolbar.MenuAction icon="arrow.up.forward.square">

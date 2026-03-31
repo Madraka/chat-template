@@ -91,7 +91,13 @@ function DrawerChatItem({
   );
 }
 
-function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
+function DrawerContent({
+  onNavigate,
+  onOpenModal,
+}: {
+  onNavigate: (path: string) => void;
+  onOpenModal: (path: string) => void;
+}) {
   return (
     <SafeAreaView
       className="flex-1 bg-background"
@@ -110,7 +116,7 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
         <DrawerNavItem label="Chats" onPress={() => onNavigate("/chats")} />
         <DrawerNavItem
           label="Settings"
-          onPress={() => onNavigate("/settings")}
+          onPress={() => onOpenModal("/(settings)/settings")}
         />
 
         {/* Recents */}
@@ -132,7 +138,10 @@ function DrawerContent({ onNavigate }: { onNavigate: (path: string) => void }) {
         className="flex-row items-center px-4 py-3 border-t border-border"
         style={{ borderTopWidth: StyleSheet.hairlineWidth }}
       >
-        <TouchableGlass className="rounded-full p-2 flex-row items-center gap-2.5 active:opacity-60">
+        <TouchableGlass
+          onPress={() => onOpenModal("/(settings)/settings")}
+          className="rounded-full p-2 flex-row items-center gap-2.5 active:opacity-60"
+        >
           <View className="w-8 h-8 rounded-full bg-muted items-center justify-center">
             <Text className="text-[13px] font-semibold text-foreground">
               EB
@@ -178,6 +187,9 @@ export default function RootLayout() {
             <DrawerContent
               onNavigate={(path) => {
                 router.replace(path as any, { withAnchor: true });
+              }}
+              onOpenModal={(path) => {
+                router.navigate(path as any);
               }}
             />
           }
@@ -289,21 +301,12 @@ function StackLayout() {
         <Stack.Header transparent></Stack.Header>
       </Stack.Screen>
       <Stack.Screen
-        name="settings"
+        name="(settings)"
         options={{
-          title: "Settings",
-          animation: "none",
+          presentation: "modal",
+          headerShown: false,
         }}
-      >
-        <Stack.Toolbar placement="left">
-          <Stack.Toolbar.Button
-            icon={"line.horizontal.3"}
-            onPress={() => {
-              router.setParams({ drawer: "open" });
-            }}
-          />
-        </Stack.Toolbar>
-      </Stack.Screen>
+      />
     </Stack>
   );
 }
