@@ -10,10 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { LayoutChangeEvent, Pressable, Text, View } from "react-native";
-import {
-  KeyboardGestureArea,
-  useKeyboardHandler,
-} from "react-native-keyboard-controller";
+import { useKeyboardHandler } from "react-native-keyboard-controller";
 import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
@@ -23,6 +20,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { KeyboardGestureArea } from "../tw";
 import { useChatContext } from "./chat-context";
 import type { ChatMessage } from "./types";
 

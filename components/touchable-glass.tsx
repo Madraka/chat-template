@@ -1,10 +1,11 @@
-import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 import React, { useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { BlurViewRawBackdrop } from "./blur-raw";
+import { GlassView } from "./tw";
 
 type GlassViewProps = React.ComponentProps<typeof GlassView>;
 

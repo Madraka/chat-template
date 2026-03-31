@@ -41,7 +41,9 @@ export default function Layout() {
         options={{
           title: "Chats",
         }}
-      />
+      >
+        <Stack.Header transparent></Stack.Header>
+      </Stack.Screen>
       <Stack.Screen
         name="index"
         options={{
