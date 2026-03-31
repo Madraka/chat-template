@@ -6,6 +6,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import "../global.css";
 import "../utils/css-variables";
 
+import { cn } from "@/utils/tailwind";
 import {
   DarkTheme,
   DefaultTheme,
@@ -68,11 +69,17 @@ function DrawerChatItem({
   return (
     <Pressable
       onPress={onPress}
-      className={`px-4 py-2.5 mx-2 rounded-[10px] ${active ? "bg-muted" : "active:bg-accent"}`}
+      className={cn(
+        `px-4 py-2.5 mx-2 rounded-[10px] active:bg-accent`,
+        active && "bg-muted",
+      )}
     >
       <Text
         numberOfLines={1}
-        className={`text-[15px] ${active ? "text-foreground" : "text-muted-foreground"}`}
+        className={cn(
+          `text-[15px]`,
+          active ? "text-foreground" : "text-muted-foreground",
+        )}
       >
         {title}
       </Text>
