@@ -290,7 +290,7 @@ function StackLayout() {
                             <HStack spacing={4} alignment="center">
                               <SUIText
                                 modifiers={[
-                                  foregroundStyle("#000000"),
+                                  foregroundStyle("#fff"),
                                   font({ weight: "semibold", size: 17 }),
                                 ]}
                               >
@@ -299,13 +299,13 @@ function StackLayout() {
                               <SUIImage
                                 systemName="chevron.down"
                                 size={10}
-                                color="#000000"
+                                color="#fff"
                               />
                             </HStack>
                             {subtitle && (
                               <SUIText
                                 modifiers={[
-                                  foregroundStyle("#00000070"),
+                                  foregroundStyle("rgba(255, 255, 255, 0.7)"),
                                   font({ size: 12 }),
                                 ]}
                               >
@@ -355,13 +355,11 @@ function StackLayout() {
         <Stack.Header transparent></Stack.Header>
 
         <Stack.Toolbar placement="left">
-          <Stack.Toolbar.Button
-            icon={"list.bullet"}
-            onPress={openDrawer}
-          />
+          <Stack.Toolbar.Button icon={"list.bullet"} onPress={openDrawer} />
         </Stack.Toolbar>
         <Stack.Toolbar placement="right">
-          <Stack.Toolbar.Menu>
+          <Stack.Toolbar.Button icon={"eyeglasses"} onPress={() => {}} />
+          {/* <Stack.Toolbar.Menu>
             <Stack.Toolbar.Label>{selectedLabel}</Stack.Toolbar.Label>
             <Stack.Toolbar.Menu inline>
               {MODELS.map((model) => (
@@ -394,7 +392,7 @@ function StackLayout() {
                 </Stack.Toolbar.MenuAction>
               ))}
             </Stack.Toolbar.Menu>
-          </Stack.Toolbar.Menu>
+          </Stack.Toolbar.Menu> */}
         </Stack.Toolbar>
       </Stack.Screen>
 
