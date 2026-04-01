@@ -31,7 +31,14 @@ import {
   DefaultTheme,
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 import { SafeAreaView as XSafeAreaView } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 const SafeAreaView = withUniwind(XSafeAreaView);
@@ -39,7 +46,7 @@ const SafeAreaView = withUniwind(XSafeAreaView);
 function ThemeProvider(props: { children: React.ReactNode }) {
   // TODO: Enable other modes
   // const colorScheme = useColorScheme();
-  const colorScheme = "dark"; // useColorScheme();
+  const colorScheme = useColorScheme();
   return (
     <RNTheme value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       {props.children}

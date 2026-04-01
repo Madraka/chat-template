@@ -19,7 +19,8 @@ import { createContext, useCallback, useContext, useRef } from "react";
 
 import { useChatContext } from "../chat-context";
 
-const TextFieldRefContext = createContext<React.RefObject<TextFieldRef | null> | null>(null);
+const TextFieldRefContext =
+  createContext<React.RefObject<TextFieldRef | null> | null>(null);
 
 export function PromptInput({ children }: { children: ReactNode }) {
   return (
@@ -74,7 +75,7 @@ export function PromptInputBody({ children }: { children: ReactNode }) {
 }
 
 export function PromptInputTextarea({
-  placeholder = "Message...",
+  placeholder = "Chat with Agent...",
 }: {
   placeholder?: string;
 }) {

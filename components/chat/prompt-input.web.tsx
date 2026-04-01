@@ -109,7 +109,7 @@ export function PromptInputBody({ children }: { children: ReactNode }) {
  * resize: none removes the browser resize handle.
  */
 export function PromptInputTextarea({
-  placeholder = "Message...",
+  placeholder = "Chat with Agent...",
   maxLength = 1000,
 }: {
   placeholder?: string;
