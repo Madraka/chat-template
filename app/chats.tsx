@@ -1,3 +1,4 @@
+import { useDrawer } from "@/components/drawer-context";
 import { Image } from "@/components/tw";
 import { Link, Stack, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
@@ -160,6 +161,7 @@ function EmptySearch({ query }: { query: string }) {
 
 export default function ChatsScreen() {
   const router = useRouter();
+  const { openDrawer } = useDrawer();
   const [search, setSearch] = useState("");
   const [chats, setChats] = useState(MOCK_CHATS);
   const [filter, setFilter] = useState<Filter>("all");
@@ -252,9 +254,7 @@ export default function ChatsScreen() {
       <Stack.Toolbar placement="left">
         <Stack.Toolbar.Button
           icon="line.horizontal.3"
-          onPress={() => {
-            router.setParams({ drawer: "open" });
-          }}
+          onPress={openDrawer}
         />
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">

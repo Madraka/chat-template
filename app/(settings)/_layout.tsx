@@ -15,6 +15,7 @@ export default function SettingsLayout() {
         name="settings"
         options={{
           title: "Settings",
+
           headerLeft: () => null,
         }}
       >

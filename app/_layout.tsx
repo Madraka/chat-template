@@ -1,7 +1,7 @@
+import { DrawerProvider, useDrawer } from "@/components/drawer-context";
 import { DrawerLayout } from "@/components/drawer-layout";
-import { Stack, useGlobalSearchParams, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useCallback } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "../global.css";
 import "../utils/css-variables";
@@ -188,42 +188,40 @@ function DrawerContent({
 }
 
 export default function RootLayout() {
-  const router = useRouter();
-  const params = useGlobalSearchParams<{ drawer?: string }>();
-  const drawerOpen = params.drawer === "open";
-
-  const onOpen = useCallback(
-    () => router.setParams({ drawer: "open" }),
-    [router],
-  );
-  const onClose = useCallback(
-    () => router.setParams({ drawer: undefined }),
-    [router],
-  );
-
   return (
     <KeyboardProvider>
       <ThemeProvider>
-        <DrawerLayout
-          open={drawerOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-          drawerContent={
-            <DrawerContent
-              onNavigate={(path) => {
-                router.replace(path as any, { withAnchor: true });
-              }}
-              onOpenModal={(path) => {
-                router.navigate(path as any);
-              }}
-            />
-          }
-        >
-          <StackLayout />
-        </DrawerLayout>
+        <DrawerProvider>
+          <RootDrawer />
+        </DrawerProvider>
       </ThemeProvider>
       <StatusBar style="auto" />
     </KeyboardProvider>
+  );
+}
+
+function RootDrawer() {
+  const router = useRouter();
+  const { isOpen, openDrawer, closeDrawer } = useDrawer();
+
+  return (
+    <DrawerLayout
+      open={isOpen}
+      onOpen={openDrawer}
+      onClose={closeDrawer}
+      drawerContent={
+        <DrawerContent
+          onNavigate={(path) => {
+            router.replace(path as any, { withAnchor: true });
+          }}
+          onOpenModal={(path) => {
+            router.navigate(path as any);
+          }}
+        />
+      }
+    >
+      <StackLayout />
+    </DrawerLayout>
   );
 }
 
@@ -255,6 +253,7 @@ const MORE_MODELS = [
 
 function StackLayout() {
   const router = useRouter();
+  const { openDrawer } = useDrawer();
   const [selectedModel, setSelectedModel] = useState("sonnet-4.6");
   const [extendedThinking, setExtendedThinking] = useState(true);
 
@@ -358,9 +357,7 @@ function StackLayout() {
         <Stack.Toolbar placement="left">
           <Stack.Toolbar.Button
             icon={"list.bullet"}
-            onPress={() => {
-              router.setParams({ drawer: "open" });
-            }}
+            onPress={openDrawer}
           />
         </Stack.Toolbar>
         <Stack.Toolbar placement="right">
