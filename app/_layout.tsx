@@ -33,6 +33,7 @@ import {
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
 import { useColorScheme } from "react-native";
+import { useCSSVariable } from "uniwind";
 
 function ThemeProvider(props: { children: React.ReactNode }) {
   const colorScheme = useColorScheme();
@@ -120,20 +121,26 @@ function StackLayout() {
   const selectedLabel =
     [...MODELS, ...MORE_MODELS].find((m) => m.id === selectedModel)?.label ??
     "Model";
+  const appForeground = useCSSVariable("--app-foreground");
 
   return (
-    <Stack screenOptions={{}}>
+    <Stack
+      screenOptions={{
+        headerTransparent: isLiquidGlassAvailable(),
+        // headerLargeTitleShadowVisible: false,
+        headerBackButtonDisplayMode: isLiquidGlassAvailable()
+          ? "minimal"
+          : "default",
+
+        headerTintColor: appForeground,
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
           title: "Chat",
           animation: "none",
           gestureEnabled: false,
-          headerTransparent: isLiquidGlassAvailable(),
-          // headerLargeTitleShadowVisible: false,
-          headerBackButtonDisplayMode: isLiquidGlassAvailable()
-            ? "minimal"
-            : "default",
 
           headerTitle:
             process.env.EXPO_OS !== "ios"
@@ -219,18 +226,10 @@ function StackLayout() {
         }}
       >
         <Stack.Toolbar placement="left">
-          <Stack.Toolbar.Button
-            icon={"list.bullet"}
-            tintColor={isDark ? "white" : "black"}
-            onPress={openDrawer}
-          />
+          <Stack.Toolbar.Button icon={"list.bullet"} onPress={openDrawer} />
         </Stack.Toolbar>
         <Stack.Toolbar placement="right">
-          <Stack.Toolbar.Button
-            icon={"eyeglasses"}
-            tintColor={isDark ? "white" : "black"}
-            onPress={() => {}}
-          />
+          <Stack.Toolbar.Button icon={"eyeglasses"} onPress={() => {}} />
           {/* <Stack.Toolbar.Menu>
             <Stack.Toolbar.Label>{selectedLabel}</Stack.Toolbar.Label>
             <Stack.Toolbar.Menu inline>
@@ -273,11 +272,10 @@ function StackLayout() {
         options={{
           title: "Chats",
           animation: "none",
+          headerLargeTitleShadowVisible: false,
           gestureEnabled: false,
         }}
-      >
-        <Stack.Header transparent></Stack.Header>
-      </Stack.Screen>
+      />
 
       <Stack.Screen
         name="add-to-chat"

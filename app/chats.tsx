@@ -1,6 +1,7 @@
 import { useDrawer } from "@/components/drawer-context";
 import { Image } from "@/components/tw";
-import { Link, Stack, useRouter } from "expo-router";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { Color, Link, Stack, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Alert, FlatList, Pressable, Text, View } from "react-native";
 
@@ -149,8 +150,7 @@ function EmptySearch({ query }: { query: string }) {
     <View className="flex-1 items-center justify-center pt-32 gap-2">
       <Image
         source="sf:magnifyingglass"
-        className="w-10 h-10"
-        tintColorClassName="tint-muted-foreground"
+        className="w-10 h-10 text-muted-foreground"
       />
       <Text className="text-[17px] text-muted-foreground text-center px-10">
         No results found for &ldquo;{query}&rdquo;
@@ -227,7 +227,9 @@ export default function ChatsScreen() {
         data={filtered}
         keyExtractor={(item) => item.id}
         contentInsetAdjustmentBehavior="automatic"
-        className="bg-transparent"
+        automaticallyAdjustContentInsets
+        automaticallyAdjustsScrollIndicatorInsets
+        automaticallyAdjustKeyboardInsets
         renderItem={({ item }) => (
           <ChatRow
             item={item}
@@ -239,13 +241,9 @@ export default function ChatsScreen() {
         ListEmptyComponent={search ? <EmptySearch query={search} /> : null}
       />
 
-      <Stack.Screen
-        options={{
-          title: "Chats",
-        }}
-      />
       <Stack.SearchBar
         placeholder="Search"
+        hideWhenScrolling={false}
         onChangeText={(e) => setSearch(e.nativeEvent.text)}
         onCancelButtonPress={() => setSearch("")}
       />
@@ -275,8 +273,11 @@ export default function ChatsScreen() {
       </Stack.Toolbar>
 
       <Stack.Toolbar placement="bottom">
-        <Stack.Toolbar.SearchBarSlot />
+        {isLiquidGlassAvailable() && (
+          <Stack.Toolbar.SearchBarSlot separateBackground />
+        )}
         <Stack.Toolbar.Button
+          tintColor={Color.ios.label}
           icon="square.and.pencil"
           onPress={() => router.navigate("/")}
           separateBackground
