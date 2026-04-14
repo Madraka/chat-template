@@ -12,6 +12,7 @@ import {
 import { LayoutChangeEvent, Pressable, Text, View } from "react-native";
 import { useKeyboardHandler } from "react-native-keyboard-controller";
 import Animated, {
+  runOnJS,
   useAnimatedProps,
   useAnimatedStyle,
   useDerivedValue,
@@ -69,12 +70,23 @@ export function Conversation({
 
   // -- Keyboard tracking --------------------------------------------------
 
+  const scrollToBottomRef = useRef<() => void>(() => {});
   const keyboardHeight = useSharedValue(0);
   // Separate value for contentInset that freezes during interactive dismiss
   // to prevent the scroll view from snapping when the user is overscrolled.
   const keyboardHeightForInset = useSharedValue(0);
+  // Tracks whether the current keyboard transition originated from an
+  // interactive dismiss gesture (vs a programmatic tap-to-open).
+  const wasInteractive = useSharedValue(false);
   useKeyboardHandler(
     {
+      onStart: (e) => {
+        "worklet";
+        // Track if keyboard is opening from a tap (not from interactive dismiss)
+        if (e.height > 0 && !wasInteractive.value) {
+          wasInteractive.value = false;
+        }
+      },
       onMove: (e) => {
         "worklet";
         keyboardHeight.value = e.height;
@@ -86,11 +98,17 @@ export function Conversation({
         // Changing contentInset during an active gesture causes a jump
         // when the user has overscrolled past the bottom.
         keyboardHeight.value = e.height;
+        wasInteractive.value = true;
       },
       onEnd: (e) => {
         "worklet";
+        const shouldScroll = e.height > 0 && !wasInteractive.value;
         keyboardHeight.value = e.height;
         keyboardHeightForInset.value = withTiming(e.height, { duration: 250 });
+        wasInteractive.value = false;
+        if (shouldScroll) {
+          runOnJS(scrollToBottomRef.current)();
+        }
       },
     },
     [],
@@ -170,6 +188,7 @@ export function Conversation({
       viewOffset: -bottomInset.value,
     });
   }, []);
+  scrollToBottomRef.current = scrollToBottom;
 
   // -- Animated styles -----------------------------------------------------
   const IS_GLASS = isLiquidGlassAvailable();
