@@ -1,6 +1,5 @@
 import ExpoIonicons from "@expo/vector-icons/Ionicons";
 import { Image as ExpoImage, type ImageStyle } from "expo-image";
-import { Platform } from "react-native";
 
 import { withUniwind } from "uniwind";
 
@@ -33,7 +32,7 @@ export function SymbolImage({
   style,
   className,
 }: SymbolImageProps) {
-  if (Platform.OS === "ios") {
+  if (process.env.EXPO_OS === "ios") {
     return (
       <Image
         source={`sf:${name}`}

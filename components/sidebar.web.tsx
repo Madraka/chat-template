@@ -1,60 +1,71 @@
 import { Link, usePathname } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Chat" },
+  { href: "/", label: "Chats" },
   { href: "/settings", label: "Settings" },
 ] as const;
 
-// SVG icons as inline data URIs for web
-function ChatIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  );
-}
-
-function PenSquareIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-      <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 6h18" />
-      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-    </svg>
-  );
-}
+const MOCK_CHATS = [
+  { id: "1", title: "Job offer from Expo" },
+  { id: "2", title: "Existing tools for iOS app tech stack" },
+  { id: "3", title: "Headless iOS simulator gateway" },
+  { id: "4", title: "Top three.js projects" },
+  { id: "5", title: "Austin magician review" },
+  { id: "6", title: "Expo agent GitHub bot description" },
+  { id: "7", title: "Building an iMessage bot with Claude" },
+  { id: "8", title: "Conditional HMR disabling in webpack" },
+  { id: "9", title: "Reworking rejection note for directive" },
+  { id: "10", title: "Optimizing parallel git config queries" },
+  { id: "11", title: "React Native navigation patterns" },
+  { id: "12", title: "Debugging metro bundler crashes" },
+];
 
 function PanelLeftIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect width="18" height="18" x="3" y="3" rx="2" />
       <path d="M9 3v18" />
     </svg>
   );
 }
 
-function ChevronUpIcon() {
+function PlusMessageIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m18 15-6-6-6 6" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <line x1="12" y1="8" x2="12" y2="16" />
+      <line x1="8" y1="12" x2="16" y2="12" />
     </svg>
   );
 }
 
 /**
- * Sidebar that collapses to an icon rail (matching Vercel chatbot pattern).
- * Expanded = 256px with labels. Collapsed = 48px icon-only rail.
- * Animated width transition.
+ * Sidebar matching the native drawer content layout:
+ * - Bold "Chat" title
+ * - Nav items (Chats, Settings)
+ * - Scrollable "Recents" section with mock chat history
+ * - Footer with user avatar + new chat button
+ *
+ * Collapses on desktop, slides on mobile.
  */
 export function Sidebar({
   isOpen,
@@ -79,7 +90,7 @@ export function Sidebar({
         />
       )}
 
-      {/* Sidebar — always rendered, animates between w-64 and w-12 */}
+      {/* Sidebar */}
       <View
         className={`
           fixed left-0 top-0 z-50 flex h-dvh flex-col bg-sidebar border-r border-border/40
@@ -87,91 +98,74 @@ export function Sidebar({
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
         style={{
-          width: isCollapsed ? 48 : 256,
+          width: isCollapsed ? 48 : 280,
           transition: "width 0.3s cubic-bezier(0.32, 0.72, 0, 1)",
           overflow: "hidden",
         }}
       >
         {/* Header */}
         <View
-          className="flex flex-row items-center h-14 px-2 gap-1"
+          className="flex flex-row items-center px-4 pt-5 pb-3"
           style={{
             justifyContent: isCollapsed ? "center" : "flex-start",
           }}
         >
-          {/* Logo / toggle button */}
-          <Pressable
-            onPress={onCollapse}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            {isCollapsed ? (
-              <ChatIcon />
-            ) : (
+          {isCollapsed ? (
+            <Pressable
+              onPress={onCollapse}
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
               <PanelLeftIcon />
-            )}
-          </Pressable>
-
-          {/* Collapse trigger (only visible when expanded) */}
-          {!isCollapsed && (
-            <Pressable
-              onPress={onToggle}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent md:hidden"
-            >
-              <Text className="text-sm">✕</Text>
             </Pressable>
+          ) : (
+            <View className="flex flex-row items-center justify-between flex-1">
+              <Text className="text-[28px] font-bold text-foreground">
+                Chat
+              </Text>
+              <View className="flex flex-row items-center gap-1">
+                {/* Close button on mobile */}
+                <Pressable
+                  onPress={onToggle}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent md:hidden"
+                >
+                  <Text className="text-sm">✕</Text>
+                </Pressable>
+                {/* Collapse button on desktop */}
+                <Pressable
+                  onPress={onCollapse}
+                  className="hidden md:flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  <PanelLeftIcon />
+                </Pressable>
+              </View>
+            </View>
           )}
         </View>
 
-        {/* Action buttons */}
-        <View
-          className={`flex gap-1 pb-2 ${isCollapsed ? "items-center px-1" : "px-3"}`}
-        >
-          <Link href="/" asChild>
-            <Pressable
-              className={`flex flex-row items-center gap-2 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground ${
-                isCollapsed
-                  ? "h-8 w-8 justify-center"
-                  : "h-8 justify-center border border-border/50 px-3"
-              }`}
-            >
-              <PenSquareIcon />
-              {!isCollapsed && (
-                <Text className="text-[13px] font-medium text-foreground">
-                  New chat
-                </Text>
-              )}
-            </Pressable>
-          </Link>
-          {isCollapsed && (
-            <Pressable className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground">
-              <TrashIcon />
-            </Pressable>
-          )}
-        </View>
-
-        {/* Chat history / navigation */}
+        {/* Nav + Chat history */}
         {!isCollapsed && (
-          <View className="flex-1 overflow-hidden px-2 py-1">
-            <Text className="px-2 pb-1 text-[11px] font-medium text-muted-foreground/60 uppercase tracking-wider">
-              Recent
-            </Text>
+          <ScrollView
+            className="flex-1"
+            // @ts-expect-error
+            contentContainerStyle={{ paddingBottom: 8 }}
+          >
+            {/* Nav items */}
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link key={item.href} href={item.href as any} asChild>
                   <Pressable
-                    className={`flex flex-row items-center rounded-lg px-2 py-1.5 mb-0.5 ${
+                    className={`px-4 py-3 mx-2 rounded-[10px] ${
                       isActive
-                        ? "bg-accent text-foreground"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-accent"
+                        : "hover:bg-accent/50 active:bg-accent"
                     }`}
                   >
                     <Text
-                      numberOfLines={1}
-                      className={`text-[13px] ${
+                      className={`text-base ${
                         isActive
-                          ? "font-medium text-foreground"
-                          : "text-muted-foreground"
+                          ? "text-foreground font-medium"
+                          : "text-foreground"
                       }`}
                     >
                       {item.label}
@@ -180,40 +174,81 @@ export function Sidebar({
                 </Link>
               );
             })}
-          </View>
+
+            {/* Recents */}
+            <Text className="text-[13px] font-semibold text-muted-foreground/60 px-6 pt-5 pb-1.5 uppercase tracking-wider">
+              Recents
+            </Text>
+            {MOCK_CHATS.map((chat) => {
+              const isActive = chat.id === "1";
+              return (
+                <Link key={chat.id} href="/" asChild>
+                  <Pressable
+                    className={`px-4 py-2.5 mx-2 rounded-[10px] ${
+                      isActive
+                        ? "bg-accent"
+                        : "hover:bg-accent/50 active:bg-accent"
+                    }`}
+                  >
+                    <Text
+                      numberOfLines={1}
+                      className={`text-[15px] ${
+                        isActive
+                          ? "text-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {chat.title}
+                    </Text>
+                  </Pressable>
+                </Link>
+              );
+            })}
+          </ScrollView>
         )}
 
         {/* Spacer when collapsed */}
         {isCollapsed && <View className="flex-1" />}
 
-        {/* Footer: user info */}
-        <View className="border-t border-border/40 p-2">
-          <Pressable
-            className={`flex flex-row items-center rounded-lg hover:bg-accent ${
-              isCollapsed ? "h-8 w-8 justify-center" : "h-8 gap-2 px-2"
-            }`}
-          >
-            <View
-              className="h-5 w-5 rounded-full shrink-0"
-              style={{
-                background:
-                  "linear-gradient(135deg, oklch(0.35 0.08 250), oklch(0.25 0.05 290))",
-              }}
-            />
+        {/* Footer */}
+        <View className="border-t border-border/40 px-3 py-3">
+          <View className="flex flex-row items-center">
+            <Pressable
+              className={`flex flex-row items-center gap-2.5 rounded-full ${
+                isCollapsed ? "justify-center" : "hover:opacity-70 active:opacity-60"
+              }`}
+            >
+              <View
+                className={`rounded-full bg-muted items-center justify-center shrink-0 ${
+                  isCollapsed ? "w-6 h-6" : "w-8 h-8"
+                }`}
+              >
+                <Text
+                  className={`font-semibold text-foreground ${
+                    isCollapsed ? "text-[10px]" : "text-[13px]"
+                  }`}
+                >
+                  EB
+                </Text>
+              </View>
+              {!isCollapsed && (
+                <Text className="text-sm text-foreground">Evan Bacon</Text>
+              )}
+            </Pressable>
+
             {!isCollapsed && (
               <>
-                <Text
-                  numberOfLines={1}
-                  className="flex-1 text-[13px] text-foreground"
-                >
-                  user@example.com
-                </Text>
-                <View className="text-muted-foreground">
-                  <ChevronUpIcon />
-                </View>
+                <View className="flex-1" />
+                <Link href="/" asChild>
+                  <Pressable className="w-10 h-10 rounded-full bg-foreground hover:bg-foreground/90 active:bg-foreground/80 items-center justify-center flex">
+                    <View className="text-background">
+                      <PlusMessageIcon />
+                    </View>
+                  </Pressable>
+                </Link>
               </>
             )}
-          </Pressable>
+          </View>
         </View>
       </View>
     </>
