@@ -1,14 +1,34 @@
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { Link, usePathname } from "expo-router";
 import {
+  Archive,
+  Edit3,
+  LogOut,
   MessageSquarePlus,
   PanelLeft,
   PanelLeftOpen,
+  Pin,
+  Settings,
+  Share,
   SquarePen,
   Trash2,
+  User,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+
+const MENU_CONTENT_CLASS =
+  "z-[100] min-w-[180px] rounded-xl bg-card p-1.5 shadow-float border border-border/40 animate-fade-up";
+
+const MENU_ITEM_CLASS =
+  "flex cursor-default select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] text-foreground outline-none data-[highlighted]:bg-accent";
+
+const MENU_SEPARATOR_CLASS = "my-1 h-px bg-border/40";
+
+const MENU_DESTRUCTIVE_CLASS =
+  "flex cursor-default select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] text-red-500 outline-none data-[highlighted]:bg-red-500/10";
 
 function SidebarTooltip({
   label,
@@ -166,24 +186,55 @@ export function Sidebar({
             {MOCK_CHATS.map((chat) => {
               const isActive = chat.id === "1";
               return (
-                <Link key={chat.id} href="/" asChild>
-                  <Pressable
-                    className={`px-4 py-2.5 mx-2 rounded-[10px] ${
-                      isActive
-                        ? "bg-accent"
-                        : "hover:bg-accent/50 active:bg-accent"
-                    }`}
-                  >
-                    <Text
-                      numberOfLines={1}
-                      className={`text-[15px] ${
-                        isActive ? "text-foreground" : "text-muted-foreground"
-                      }`}
-                    >
-                      {chat.title}
-                    </Text>
-                  </Pressable>
-                </Link>
+                <ContextMenu.Root key={chat.id}>
+                  <ContextMenu.Trigger asChild>
+                    <Link href="/" asChild>
+                      <Pressable
+                        className={`px-4 py-2.5 mx-2 rounded-[10px] ${
+                          isActive
+                            ? "bg-accent"
+                            : "hover:bg-accent/50 active:bg-accent"
+                        }`}
+                      >
+                        <Text
+                          numberOfLines={1}
+                          className={`text-[15px] ${
+                            isActive
+                              ? "text-foreground"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {chat.title}
+                        </Text>
+                      </Pressable>
+                    </Link>
+                  </ContextMenu.Trigger>
+                  <ContextMenu.Portal>
+                    <ContextMenu.Content className={MENU_CONTENT_CLASS}>
+                      <ContextMenu.Item className={MENU_ITEM_CLASS}>
+                        <Pin size={14} strokeWidth={1.5} />
+                        Pin chat
+                      </ContextMenu.Item>
+                      <ContextMenu.Item className={MENU_ITEM_CLASS}>
+                        <Edit3 size={14} strokeWidth={1.5} />
+                        Rename
+                      </ContextMenu.Item>
+                      <ContextMenu.Item className={MENU_ITEM_CLASS}>
+                        <Share size={14} strokeWidth={1.5} />
+                        Share
+                      </ContextMenu.Item>
+                      <ContextMenu.Item className={MENU_ITEM_CLASS}>
+                        <Archive size={14} strokeWidth={1.5} />
+                        Archive
+                      </ContextMenu.Item>
+                      <ContextMenu.Separator className={MENU_SEPARATOR_CLASS} />
+                      <ContextMenu.Item className={MENU_DESTRUCTIVE_CLASS}>
+                        <Trash2 size={14} strokeWidth={1.5} />
+                        Delete
+                      </ContextMenu.Item>
+                    </ContextMenu.Content>
+                  </ContextMenu.Portal>
+                </ContextMenu.Root>
               );
             })}
           </ScrollView>
@@ -229,14 +280,42 @@ export function Sidebar({
         {!isCollapsed && (
           <View className="border-t border-border/40 px-3 py-3">
             <View className="flex flex-row items-center">
-              <Pressable className="flex flex-row items-center gap-2.5 rounded-full hover:opacity-70 active:opacity-60">
-                <View className="rounded-full bg-muted items-center justify-center shrink-0 w-8 h-8">
-                  <Text className="font-semibold text-foreground text-[13px]">
-                    EB
-                  </Text>
-                </View>
-                <Text className="text-sm text-foreground">Evan Bacon</Text>
-              </Pressable>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <Pressable className="flex flex-row items-center gap-2.5 rounded-full hover:opacity-70 active:opacity-60">
+                    <View className="rounded-full bg-muted items-center justify-center shrink-0 w-8 h-8">
+                      <Text className="font-semibold text-foreground text-[13px]">
+                        EB
+                      </Text>
+                    </View>
+                    <Text className="text-sm text-foreground">Evan Bacon</Text>
+                  </Pressable>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Portal>
+                  <DropdownMenu.Content
+                    side="top"
+                    sideOffset={8}
+                    align="start"
+                    className={MENU_CONTENT_CLASS}
+                  >
+                    <DropdownMenu.Item className={MENU_ITEM_CLASS}>
+                      <User size={14} strokeWidth={1.5} />
+                      Profile
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item className={MENU_ITEM_CLASS}>
+                      <Settings size={14} strokeWidth={1.5} />
+                      Settings
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Separator
+                      className={MENU_SEPARATOR_CLASS}
+                    />
+                    <DropdownMenu.Item className={MENU_DESTRUCTIVE_CLASS}>
+                      <LogOut size={14} strokeWidth={1.5} />
+                      Sign out
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Root>
 
               <View className="flex-1" />
               <Link href="/" asChild>

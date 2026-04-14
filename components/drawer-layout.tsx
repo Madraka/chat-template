@@ -16,8 +16,8 @@ import {
 import {
   Gesture,
   GestureDetector,
-  GestureHandlerRootView,
   State as GestureState,
+  GestureHandlerRootView as XGestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
@@ -29,6 +29,9 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { withUniwind } from "uniwind";
+
+const GestureHandlerRootView = withUniwind(XGestureHandlerRootView);
 
 const APPROX_APP_BAR_HEIGHT = 56;
 const DEFAULT_DRAWER_WIDTH = 360;
@@ -258,13 +261,13 @@ export function DrawerLayout({
   });
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView className="flex-1">
       <GestureDetector gesture={pan}>
         <Animated.View style={styles.main}>
           <Animated.View
             style={[styles.content, styles.contentCard, contentAnimatedStyle]}
           >
-            <View aria-hidden={open} style={styles.contentInner}>
+            <View aria-hidden={open} className="flex-1 overflow-hidden">
               {children}
             </View>
             <Overlay progress={progress} onPress={() => toggleDrawer(false)} />
@@ -351,9 +354,6 @@ function DrawerDim({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   drawer: {
     position: "absolute",
     top: 0,
@@ -366,12 +366,6 @@ const styles = StyleSheet.create({
   contentCard: {
     overflow: "hidden",
     boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.15)",
-    // borderColor: "rgba(0, 0, 0, 0.15)",
-    // borderWidth: StyleSheet.hairlineWidth,
-  },
-  contentInner: {
-    flex: 1,
-    overflow: "hidden",
   },
   main: {
     flex: 1,
