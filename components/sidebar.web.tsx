@@ -104,20 +104,8 @@ export function Sidebar({
         }}
       >
         {/* Header */}
-        <View
-          className="flex flex-row items-center px-4 pt-5 pb-3"
-          style={{
-            justifyContent: isCollapsed ? "center" : "flex-start",
-          }}
-        >
-          {isCollapsed ? (
-            <Pressable
-              onPress={onCollapse}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
-            >
-              <PanelLeftIcon />
-            </Pressable>
-          ) : (
+        {!isCollapsed && (
+          <View className="flex flex-row items-center px-4 pt-5 pb-3">
             <View className="flex flex-row items-center justify-between flex-1">
               <Text className="text-[28px] font-bold text-foreground">
                 Chat
@@ -139,8 +127,8 @@ export function Sidebar({
                 </Pressable>
               </View>
             </View>
-          )}
-        </View>
+          </View>
+        )}
 
         {/* Nav + Chat history */}
         {!isCollapsed && (
