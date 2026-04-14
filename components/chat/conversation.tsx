@@ -95,6 +95,7 @@ export function Conversation({
   const scrollViewHeight = useSharedValue(0);
   const totalContentHeight = useSharedValue(0);
   const currentFooterHeight = useSharedValue(0);
+  const messagesOnlyHeight = useSharedValue(0);
 
   // -- Auto-scroll ---------------------------------------------------------
 
@@ -140,6 +141,10 @@ export function Conversation({
 
     totalContentHeight.value = height;
     lastContentHeight.value = height;
+    // Derive message-only height by subtracting the last known footer height.
+    // This is stable: when the footer resizes, totalContent changes but
+    // messagesOnly stays the same, breaking the feedback loop.
+    messagesOnlyHeight.value = height - currentFooterHeight.value;
 
     if (wasAtBottom && heightIncreased && listRef.current) {
       requestAnimationFrame(() => {
@@ -164,10 +169,9 @@ export function Conversation({
     const scrollHeight = scrollViewHeight.value;
     if (scrollHeight <= 0) return { height: 0 };
 
-    const messageContent = totalContentHeight.value - currentFooterHeight.value;
     const keyboard = Math.abs(keyboardHeight.value);
     const bottom = composerHeight.value + Math.max(insets.bottom, keyboard);
-    const blankSpace = scrollHeight - messageContent - bottom;
+    const blankSpace = scrollHeight - messagesOnlyHeight.value - bottom;
     const footerHeight = Math.max(0, blankSpace);
 
     currentFooterHeight.value = footerHeight;
@@ -250,8 +254,9 @@ export function Conversation({
             onScroll={onScroll}
             scrollEventThrottle={16}
             onContentSizeChange={onContentSizeChange}
-            ListEmptyComponent={emptyState}
-            ListFooterComponent={<Animated.View style={footerSpacerStyle} />}
+            ListFooterComponent={<Animated.View style={footerSpacerStyle}>
+              {!messages.length && emptyState}
+            </Animated.View>}
           />
         </KeyboardGestureArea>
 
@@ -300,13 +305,13 @@ export function ConversationEmptyState({
   icon?: string;
 }) {
   return (
-    <View className="flex-1 justify-center items-center pt-24">
+    <View className="flex-1 justify-center items-center pt-24 gap-2">
       <SymbolImage
         name={icon}
         size={48}
-        className="text-muted-foreground dark:text-muted-foreground mb-4"
+        className="text-muted-foreground dark:text-muted-foreground"
       />
-      <Text className="text-xl font-semibold text-foreground dark:text-foreground mb-2">
+      <Text className="text-xl font-semibold text-foreground dark:text-foreground">
         {title}
       </Text>
       {description && (
