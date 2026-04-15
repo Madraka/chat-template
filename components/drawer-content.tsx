@@ -5,29 +5,8 @@ import { TouchableGlass } from "@/components/touchable-glass";
 import { Image, SafeAreaView } from "@/components/tw";
 import { MOCK_CHATS } from "@/utils/mock-chats";
 import { cn } from "@/utils/tailwind";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider as RNTheme,
-} from "@react-navigation/native";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
 
-function ThemeProvider(props: { children: React.ReactNode }) {
-  const colorScheme = useColorScheme();
-  return (
-    <RNTheme value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {props.children}
-    </RNTheme>
-  );
-}
-
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 function DrawerNavItem({
   label,
