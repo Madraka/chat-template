@@ -1,81 +1,10 @@
 import { useDrawer } from "@/components/drawer-context";
 import { Image } from "@/components/tw";
+import { MOCK_CHATS, type MockChat } from "@/utils/mock-chats";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Color, Link, Stack, useRouter } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Alert, FlatList, Pressable, Text, View } from "react-native";
-
-const MOCK_CHATS = [
-  { id: "1", title: "Job offer from Expo", daysAgo: 5, starred: false },
-  {
-    id: "2",
-    title: "Existing tools for iOS app tech stack detection",
-    daysAgo: 5,
-    starred: false,
-  },
-  {
-    id: "3",
-    title: "Headless iOS simulator gateway for concurrent testing",
-    daysAgo: 7,
-    starred: false,
-  },
-  { id: "4", title: "Top three.js projects", daysAgo: 7, starred: true },
-  { id: "5", title: "Austin magician review", daysAgo: 7, starred: false },
-  {
-    id: "6",
-    title: "Expo agent GitHub bot description",
-    daysAgo: 14,
-    starred: false,
-  },
-  {
-    id: "7",
-    title: "Building an iMessage bot with Claude",
-    daysAgo: 14,
-    starred: true,
-  },
-  {
-    id: "8",
-    title: "Conditional HMR disabling in web frameworks",
-    daysAgo: 14,
-    starred: false,
-  },
-  {
-    id: "10",
-    title: "Optimizing parallel git config queries",
-    daysAgo: 14,
-    starred: false,
-  },
-  {
-    id: "11",
-    title: "Choosing between Tailwind and StyleX",
-    daysAgo: 21,
-    starred: false,
-  },
-  {
-    id: "12",
-    title: "Structuring messages and timelines",
-    daysAgo: 28,
-    starred: false,
-  },
-  {
-    id: "13",
-    title: "SVG morphing animation between shapes",
-    daysAgo: 28,
-    starred: false,
-  },
-  {
-    id: "14",
-    title: "Expo navigation patterns",
-    daysAgo: 30,
-    starred: false,
-  },
-  {
-    id: "15",
-    title: "Debugging Expo CLI",
-    daysAgo: 35,
-    starred: false,
-  },
-];
 
 type Filter = "all" | "starred";
 
@@ -85,7 +14,7 @@ function formatTimeAgo(daysAgo: number): string {
   return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
 }
 
-type Chat = (typeof MOCK_CHATS)[number];
+type Chat = MockChat;
 
 function ChatRow({
   item,

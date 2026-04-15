@@ -1,3 +1,4 @@
+import { MOCK_CHATS } from "@/utils/mock-chats";
 import * as ContextMenu from "@radix-ui/react-context-menu";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -59,20 +60,6 @@ const NAV_ITEMS = [
   { href: "/settings", label: "Settings" },
 ] as const;
 
-const MOCK_CHATS = [
-  { id: "1", title: "Job offer from Expo" },
-  { id: "2", title: "Existing tools for iOS app tech stack" },
-  { id: "3", title: "Headless iOS simulator gateway" },
-  { id: "4", title: "Top three.js projects" },
-  { id: "5", title: "Austin magician review" },
-  { id: "6", title: "Expo agent GitHub bot description" },
-  { id: "7", title: "Building an iMessage bot with Claude" },
-  { id: "8", title: "Conditional HMR disabling in webpack" },
-  { id: "9", title: "Reworking rejection note for directive" },
-  { id: "10", title: "Optimizing parallel git config queries" },
-  { id: "11", title: "React Native navigation patterns" },
-  { id: "12", title: "Debugging metro bundler crashes" },
-];
 
 /**
  * Sidebar matching the native drawer content layout:
