@@ -102,11 +102,9 @@ function StackLayout() {
     <Stack
       screenOptions={{
         headerTransparent: isLiquidGlassAvailable(),
-        // headerLargeTitleShadowVisible: false,
         headerBackButtonDisplayMode: isLiquidGlassAvailable()
           ? "minimal"
           : "default",
-
         headerTintColor: appForeground,
       }}
     >
