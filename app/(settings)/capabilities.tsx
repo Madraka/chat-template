@@ -2,43 +2,6 @@ import { Image } from "@/components/tw";
 import { useState } from "react";
 import { ScrollView, Switch, Text, View } from "react-native";
 
-function CapabilityToggle({
-  icon,
-  label,
-  description,
-  value,
-  onValueChange,
-}: {
-  icon: string;
-  label: string;
-  description?: string;
-  value: boolean;
-  onValueChange: (v: boolean) => void;
-}) {
-  return (
-    <View className="flex-row items-center px-5 py-3.5 gap-4">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
-      <View className="flex-1 gap-0.5">
-        <Text className="text-[17px] text-foreground">{label}</Text>
-        {description && (
-          <Text className="text-[13px] text-muted-foreground leading-snug">
-            {description}
-          </Text>
-        )}
-      </View>
-      <Switch value={value} onValueChange={onValueChange} />
-    </View>
-  );
-}
-
-function SectionHeader({ title }: { title: string }) {
-  return (
-    <Text className="text-[15px] font-semibold text-foreground px-5 pt-6 pb-2">
-      {title}
-    </Text>
-  );
-}
-
 export default function CapabilitiesScreen() {
   const [artifacts, setArtifacts] = useState(true);
   const [codeExecution, setCodeExecution] = useState(true);
@@ -153,5 +116,42 @@ function ToolAccessOption({
         <Image source="sf:checkmark" className="w-5 h-5 text-blue-500" />
       )}
     </View>
+  );
+}
+
+function CapabilityToggle({
+  icon,
+  label,
+  description,
+  value,
+  onValueChange,
+}: {
+  icon: string;
+  label: string;
+  description?: string;
+  value: boolean;
+  onValueChange: (v: boolean) => void;
+}) {
+  return (
+    <View className="flex-row items-center px-5 py-3.5 gap-4">
+      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
+      <View className="flex-1 gap-0.5">
+        <Text className="text-[17px] text-foreground">{label}</Text>
+        {description && (
+          <Text className="text-[13px] text-muted-foreground leading-snug">
+            {description}
+          </Text>
+        )}
+      </View>
+      <Switch value={value} onValueChange={onValueChange} />
+    </View>
+  );
+}
+
+function SectionHeader({ title }: { title: string }) {
+  return (
+    <Text className="text-[15px] font-semibold text-foreground px-5 pt-6 pb-2">
+      {title}
+    </Text>
   );
 }
