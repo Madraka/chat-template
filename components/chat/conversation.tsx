@@ -26,6 +26,8 @@ import { KeyboardGestureArea } from "../tw";
 import { useChatContext } from "./chat-context";
 import type { ChatMessage } from "./types";
 
+const IS_GLASS = isLiquidGlassAvailable();
+
 const AnimatedLegendList = Animated.createAnimatedComponent(LegendList);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Reanimated animated styles are opaque worklet objects
@@ -191,7 +193,6 @@ export function Conversation({
   scrollToBottomRef.current = scrollToBottom;
 
   // -- Animated styles -----------------------------------------------------
-  const IS_GLASS = isLiquidGlassAvailable();
   const topPadding = IS_GLASS ? 128 : 16;
 
   const footerSpacerStyle = useAnimatedStyle(() => {
@@ -231,7 +232,6 @@ export function Conversation({
   const listAnimatedProps = useAnimatedProps(() => {
     const keyboard = Math.abs(keyboardHeightForInset.value);
     const bottom = composerHeight.value + Math.max(insets.bottom, keyboard);
-    // paddingTop: isLiquidGlassAvailable() ? 128 : 16,
     return {
       contentInset: { top: topPadding, left: 0, right: 0, bottom },
       scrollIndicatorInsets: { top: 0, left: 0, right: 0, bottom },

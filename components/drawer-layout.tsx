@@ -9,7 +9,6 @@ import {
   InteractionManager,
   Keyboard,
   Pressable,
-  StyleSheet,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -223,49 +222,62 @@ export function DrawerLayout({
   ]);
 
   // Clamped translation for styles
-  const translateX = useDerivedValue(() => {
-    return minmax(translationX.value, -drawerWidth, 0);
-  });
+  const translateX = useDerivedValue(() =>
+    minmax(translationX.value, -drawerWidth, 0),
+  );
 
   const CORNERS = 53;
-  const contentAnimatedStyle = useAnimatedStyle(() => {
-    return {
+  const contentAnimatedStyle = useAnimatedStyle(
+    () => ({
       zIndex: translateX.value === -drawerWidth ? 0 : 2,
       transform: [
         {
           translateX: translateX.value + drawerWidth,
         },
       ],
+    }),
+    [drawerWidth, translateX],
+  );
 
-      borderCurve: "continuous" as const,
-      borderRadius: CORNERS,
-      // borderTopLeftRadius: interpolate(p, [0, 0.2], [24, CORNERS], "clamp"),
-      // borderBottomLeftRadius: interpolate(p, [0, 0.2], [24, CORNERS], "clamp"),
-    };
-  }, [drawerWidth, translateX]);
-
-  const drawerAnimatedStyle = useAnimatedStyle(() => {
-    const p =
-      drawerWidth === 0 ? 0 : (translateX.value + drawerWidth) / drawerWidth;
-    return {
+  const drawerAnimatedStyle = useAnimatedStyle(
+    () => ({
       // Force commit to shadow tree for pressables
       zIndex: translateX.value === -drawerWidth ? -1 : 0,
-      transform: [{ scale: interpolate(p, [0, 1], [0.95, 1]) }],
-    };
-  }, [drawerWidth, translateX]);
+      transform: [
+        {
+          scale: interpolate(
+            drawerWidth === 0
+              ? 0
+              : (translateX.value + drawerWidth) / drawerWidth,
+            [0, 1],
+            [0.95, 1],
+          ),
+        },
+      ],
+    }),
+    [drawerWidth, translateX],
+  );
 
-  const progress = useDerivedValue(() => {
-    return drawerWidth === 0
+  const progress = useDerivedValue(() =>
+    drawerWidth === 0
       ? 0
-      : interpolate(translateX.value, [-drawerWidth, 0], [0, 1]);
-  });
+      : interpolate(translateX.value, [-drawerWidth, 0], [0, 1]),
+  );
 
   return (
     <GestureHandlerRootView className="flex-1">
       <GestureDetector gesture={pan}>
-        <Animated.View style={styles.main}>
+        <Animated.View className="flex-1 overflow-hidden">
           <Animated.View
-            style={[styles.content, styles.contentCard, contentAnimatedStyle]}
+            className="flex-1 overflow-hidden"
+            style={[
+              {
+                borderCurve: "continuous" as const,
+                borderRadius: CORNERS,
+                boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.15)",
+              },
+              contentAnimatedStyle,
+            ]}
           >
             <View aria-hidden={open} className="flex-1 overflow-hidden">
               {children}
@@ -273,8 +285,8 @@ export function DrawerLayout({
             <Overlay progress={progress} onPress={() => toggleDrawer(false)} />
           </Animated.View>
           <Animated.View
+            className="absolute top-0 bottom-0 max-w-full"
             style={[
-              styles.drawer,
               { width: drawerWidth, transformOrigin: "left top" },
               drawerAnimatedStyle,
             ]}
@@ -295,11 +307,12 @@ function Overlay({
   progress: ReturnType<typeof useDerivedValue<number>>;
   onPress: () => void;
 }) {
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
+  const animatedStyle = useAnimatedStyle(
+    () => ({
       opacity: progress.value,
-    };
-  }, [progress]);
+    }),
+    [progress],
+  );
 
   const animatedProps = useAnimatedProps(() => {
     const active = progress.value > PROGRESS_EPSILON;
@@ -311,12 +324,13 @@ function Overlay({
 
   return (
     <Animated.View
-      style={[StyleSheet.absoluteFill, styles.overlay, animatedStyle]}
+      style={animatedStyle}
+      className={"absolute inset-0 bg-card/80 dark:bg-card/80"}
       animatedProps={animatedProps}
     >
       <Pressable
         onPress={onPress}
-        style={styles.pressable}
+        className="flex flex-1 pointer-events-auto"
         role="button"
         aria-label="Close drawer"
         accessible
@@ -342,43 +356,8 @@ function DrawerDim({
 
   return (
     <Animated.View
-      style={[
-        StyleSheet.absoluteFill,
-        styles.drawerDim,
-        { transformOrigin: "left top" },
-        animatedStyle,
-      ]}
-      pointerEvents="none"
+      className={"pointer-events-none bg-black absolute inset-0"}
+      style={[{ transformOrigin: "left top" }, animatedStyle]}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  drawer: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    maxWidth: "100%",
-  },
-  content: {
-    flex: 1,
-  },
-  contentCard: {
-    overflow: "hidden",
-    boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.15)",
-  },
-  main: {
-    flex: 1,
-    overflow: "hidden",
-  },
-  overlay: {
-    backgroundColor: "rgba(21, 21, 21, 0.5)",
-  },
-  pressable: {
-    flex: 1,
-    pointerEvents: "auto",
-  },
-  drawerDim: {
-    backgroundColor: "black",
-  },
-});

@@ -3,66 +3,6 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 
-function SectionDivider() {
-  return <View className="h-px bg-border mx-5" />;
-}
-
-function SettingsRow({
-  icon,
-  label,
-  detail,
-  href,
-}: {
-  icon: string;
-  label: string;
-  detail?: string;
-  href?: string;
-}) {
-  const content = (
-    <View className="flex-row items-center px-5 py-3.5 gap-4 active:bg-muted">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
-      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
-      {detail && (
-        <Text className="text-[15px] text-muted-foreground">{detail}</Text>
-      )}
-      <Image
-        source="sf:chevron.right"
-        className="w-3.5 h-3.5 text-muted-foreground"
-      />
-    </View>
-  );
-
-  if (href) {
-    return (
-      <Link href={href as any} asChild>
-        <Pressable>{content}</Pressable>
-      </Link>
-    );
-  }
-
-  return <Pressable>{content}</Pressable>;
-}
-
-function SettingsToggleRow({
-  icon,
-  label,
-  value,
-  onValueChange,
-}: {
-  icon: string;
-  label: string;
-  value: boolean;
-  onValueChange: (v: boolean) => void;
-}) {
-  return (
-    <View className="flex-row items-center px-5 py-3 gap-4">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
-      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
-      <Switch value={value} onValueChange={onValueChange} />
-    </View>
-  );
-}
-
 export default function SettingsScreen() {
   const [hapticFeedback, setHapticFeedback] = useState(true);
 
@@ -136,5 +76,65 @@ export default function SettingsScreen() {
         <Text className="text-[17px] text-foreground">Log out</Text>
       </Pressable>
     </ScrollView>
+  );
+}
+
+function SectionDivider() {
+  return <View className="h-px bg-border mx-5" />;
+}
+
+function SettingsRow({
+  icon,
+  label,
+  detail,
+  href,
+}: {
+  icon: string;
+  label: string;
+  detail?: string;
+  href?: string;
+}) {
+  const content = (
+    <View className="flex-row items-center px-5 py-3.5 gap-4 active:bg-muted">
+      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
+      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
+      {detail && (
+        <Text className="text-[15px] text-muted-foreground">{detail}</Text>
+      )}
+      <Image
+        source="sf:chevron.right"
+        className="w-3.5 h-3.5 text-muted-foreground"
+      />
+    </View>
+  );
+
+  if (href) {
+    return (
+      <Link href={href as any} asChild>
+        <Pressable>{content}</Pressable>
+      </Link>
+    );
+  }
+
+  return <Pressable>{content}</Pressable>;
+}
+
+function SettingsToggleRow({
+  icon,
+  label,
+  value,
+  onValueChange,
+}: {
+  icon: string;
+  label: string;
+  value: boolean;
+  onValueChange: (v: boolean) => void;
+}) {
+  return (
+    <View className="flex-row items-center px-5 py-3 gap-4">
+      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
+      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
+      <Switch value={value} onValueChange={onValueChange} />
+    </View>
   );
 }

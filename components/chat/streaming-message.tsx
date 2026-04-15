@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Platform, Text } from "react-native";
+import { Text } from "react-native";
 import type { StreamingStore } from "./streaming-store";
 
 export function StreamingMessage({ store }: { store: StreamingStore }) {
@@ -7,7 +7,7 @@ export function StreamingMessage({ store }: { store: StreamingStore }) {
   return (
     <Text
       className={
-        Platform.OS === "web"
+        process.env.EXPO_OS === "web"
           ? "text-[13px] leading-[1.65] text-foreground"
           : "text-base leading-[22px] text-foreground"
       }
