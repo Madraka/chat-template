@@ -34,91 +34,26 @@ export function ChatMarkdown({ children }: { children: string }) {
   const baseFontSize = isWeb ? 13 : 16;
   const baseLineHeight = isWeb ? 21.5 : 22;
 
+  // Only overrides — defaults from utils.ts are merged automatically
   const markdownStyles = {
-    root: {},
-    heading1: {
-      fontSize: 24,
-      fontWeight: "bold" as const,
-      color: text,
-    },
-    heading2: {
-      fontSize: 20,
-      lineHeight: 28,
-      fontWeight: "bold" as const,
-      color: text,
-    },
-    heading3: {
-      fontSize: 18,
-      fontWeight: "600" as const,
-      color: text,
-    },
-    heading4: {
-      fontSize: 16,
-      fontWeight: "600" as const,
-      color: text,
-    },
-    heading5: {
-      fontSize: 14,
-      fontWeight: "600" as const,
-      color: text,
-    },
-    heading6: {
-      fontSize: 12,
-      fontWeight: "600" as const,
-      color: text,
-    },
-    paragraph: {
-      fontSize: baseFontSize,
-      marginVertical: 4,
-      flexWrap: "wrap" as const,
-      flexDirection: "row" as const,
-      alignItems: "flex-start" as const,
-      justifyContent: "flex-start" as const,
-      width: "100%" as const,
-    },
-    strong: {
-      fontWeight: "bold" as const,
-    },
-    emphasis: {
-      fontStyle: "italic" as const,
-    },
-    text: {
-      color: text,
-      fontSize: baseFontSize,
-      lineHeight: baseLineHeight,
-    },
-    thematicBreak: {
-      flex: 1,
-      height: 1,
-      backgroundColor: border,
-      marginVertical: 8,
-    },
-    blockquote: {
-      backgroundColor: bg3,
-      borderColor: border,
-      borderLeftWidth: 4,
-      paddingHorizontal: 8,
-      marginVertical: 8,
-    },
-    codeContainer: {
-      backgroundColor: fill3,
-      padding: 12,
-      borderRadius: 8,
-      marginVertical: 4,
-    },
+    heading1: { fontSize: 24, color: text },
+    heading2: { fontSize: 20, lineHeight: 28, fontWeight: "bold" as const, color: text },
+    heading3: { fontSize: 18, color: text },
+    heading4: { fontSize: 16, color: text },
+    heading5: { fontSize: 14, color: text },
+    heading6: { fontSize: 12, color: text },
+    paragraph: { fontSize: baseFontSize, marginVertical: 4 },
+    text: { color: text, fontSize: baseFontSize, lineHeight: baseLineHeight },
+    thematicBreak: { backgroundColor: border },
+    blockquote: { backgroundColor: bg3, borderColor: border, paddingHorizontal: 8 },
+    codeContainer: { backgroundColor: fill3, padding: 12, borderRadius: 8 },
     codeText: {
       fontSize: isWeb ? 12 : 14,
       color: text,
-      fontFamily: Platform.select({
-        ios: "ui-monospace",
-        default: "monospace",
-      }),
+      fontFamily: Platform.select({ ios: "ui-monospace", default: "monospace" }),
     },
     inlineCode: {
-      fontFamily: Platform.select({
-        ios: "ui-monospace",
-        default: "monospace",
-      }),
+      fontFamily: Platform.select({ ios: "ui-monospace", default: "monospace" }),
       paddingHorizontal: 4,
       fontSize: isWeb ? 12 : 15,
       color: text,
@@ -126,71 +61,16 @@ export function ChatMarkdown({ children }: { children: string }) {
       borderRadius: 4,
       backgroundColor: fill3,
     },
-    link: {
-      fontSize: baseFontSize,
-      color: link,
-    },
-    image: {
-      width: "100%" as const,
-      height: 200,
-      aspectRatio: 16 / 9,
-      resizeMode: "cover" as const,
-      backgroundColor: fill3,
-      borderRadius: 8,
-      overflow: "hidden" as const,
-    },
-    list: {},
-    listItem: {
-      flexDirection: "row" as const,
-      alignItems: "baseline" as const,
-      justifyContent: "flex-start" as const,
-    },
-    listBullet: {
-      fontSize: 16,
-      color: text2,
-      fontVariant: ["tabular-nums" as const],
-      marginRight: 8,
-    },
-    listItemContent: {
-      flex: 1,
-      flexWrap: "wrap" as const,
-    },
-    delete: {
-      textDecorationLine: "line-through" as const,
-    },
-    // Table styles
-    table: {
-      marginVertical: 8,
-      borderWidth: 1,
-      borderColor: border,
-      borderRadius: 8,
-      overflow: "hidden" as const,
-    },
-    tableRow: {
-      flexDirection: "row" as const,
-      borderBottomWidth: 1,
-      borderBottomColor: border,
-    },
-    tableHeaderRow: {
-      backgroundColor: bg2,
-    },
-    tableCell: {
-      flex: 1,
-      padding: 10,
-      borderRightWidth: 1,
-      borderRightColor: border,
-    },
-    tableHeaderCell: {
-      backgroundColor: bg2,
-    },
-    tableCellText: {
-      fontSize: 14,
-      color: text,
-    },
-    tableHeaderCellText: {
-      fontWeight: "600" as const,
-      color: text,
-    },
+    link: { fontSize: baseFontSize, color: link },
+    image: { height: 200, aspectRatio: 16 / 9, backgroundColor: fill3, borderRadius: 8 },
+    listBullet: { color: text2, fontVariant: ["tabular-nums" as const], marginRight: 8 },
+    table: { borderColor: border, borderRadius: 8 },
+    tableRow: { borderBottomColor: border },
+    tableHeaderRow: { backgroundColor: bg2 },
+    tableCell: { padding: 10, borderRightColor: border },
+    tableHeaderCell: { backgroundColor: bg2 },
+    tableCellText: { color: text },
+    tableHeaderCellText: { color: text },
   };
 
   return (
