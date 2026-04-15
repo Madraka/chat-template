@@ -23,6 +23,30 @@ import { useColorScheme } from "react-native";
 import { useCSSVariable } from "uniwind";
 
 const GLASS = isLiquidGlassAvailable();
+const MODELS = [
+  {
+    id: "opus-4.6",
+    label: "Opus 4.6",
+    subtitle: "Most capable for ambitious work",
+  },
+  {
+    id: "sonnet-4.6",
+    label: "Sonnet 4.6",
+    subtitle: "Most efficient for everyday tasks",
+  },
+  {
+    id: "haiku-4.5",
+    label: "Haiku 4.5",
+    subtitle: "Fastest for quick answers",
+  },
+] as const;
+
+const MORE_MODELS = [
+  { id: "opus-4.5", label: "Opus 4.5" },
+  { id: "opus-3", label: "Opus 3" },
+  { id: "sonnet-4.5", label: "Sonnet 4.5" },
+] as const;
+
 function ThemeProvider(props: { children: React.ReactNode }) {
   const colorScheme = useColorScheme();
   return (
@@ -31,6 +55,10 @@ function ThemeProvider(props: { children: React.ReactNode }) {
     </RNTheme>
   );
 }
+
+export const unstable_settings = {
+  anchor: "index",
+};
 
 export default function RootLayout() {
   return (
@@ -73,30 +101,6 @@ function RootDrawer() {
   );
 }
 
-const MODELS = [
-  {
-    id: "opus-4.6",
-    label: "Opus 4.6",
-    subtitle: "Most capable for ambitious work",
-  },
-  {
-    id: "sonnet-4.6",
-    label: "Sonnet 4.6",
-    subtitle: "Most efficient for everyday tasks",
-  },
-  {
-    id: "haiku-4.5",
-    label: "Haiku 4.5",
-    subtitle: "Fastest for quick answers",
-  },
-] as const;
-
-const MORE_MODELS = [
-  { id: "opus-4.5", label: "Opus 4.5" },
-  { id: "opus-3", label: "Opus 3" },
-  { id: "sonnet-4.5", label: "Sonnet 4.5" },
-] as const;
-
 function StackLayout() {
   const { openDrawer } = useDrawer();
   const [extendedThinking, setExtendedThinking] = useState(true);
@@ -112,6 +116,7 @@ function StackLayout() {
     >
       <Stack.Screen
         name="index"
+        dangerouslySingular
         options={{
           title: "Chat",
           animation: "none",

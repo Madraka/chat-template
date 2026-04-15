@@ -1,4 +1,21 @@
-import { Image } from "@/components/tw";
+import { Icon } from "@/components/icon";
+import {
+  Bell,
+  ChevronRight,
+  CircleDollarSign,
+  CircleUser,
+  Globe,
+  LayoutGrid,
+  Link2,
+  LogOut,
+  ShieldCheck,
+  SlidersHorizontal,
+  SunMoon,
+  TrendingUp,
+  Users,
+  Vibrate,
+} from "lucide-react-native";
+import type { LucideIcon } from "lucide-react-native";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
@@ -8,58 +25,60 @@ export default function SettingsScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-background"
+      className="flex-1 bg-background dark:bg-background"
       contentInsetAdjustmentBehavior="automatic"
-      contentContainerClassName="pb-10"
     >
       {/* Email */}
       <View
-        className="mx-5 mt-4 mb-5 bg-muted rounded-xl px-4 py-3"
+        className="mx-5 mt-4 mb-5 bg-muted dark:bg-muted rounded-xl px-4 py-3"
         style={{ borderCurve: "continuous" }}
       >
-        <Text selectable className="text-[15px] text-foreground">
+        <Text
+          selectable
+          className="text-[15px] text-foreground dark:text-foreground"
+        >
           developer@expo.dev
         </Text>
       </View>
 
       {/* Account */}
       <SettingsRow
-        icon="person.crop.circle"
+        icon={CircleUser}
         label="Profile"
         href="/(settings)/profile"
       />
-      <SettingsRow icon="dollarsign.circle" label="Billing" detail="Max plan" />
-      <SettingsRow icon="chart.line.uptrend.xyaxis" label="Usage" />
+      <SettingsRow
+        icon={CircleDollarSign}
+        label="Billing"
+        detail="Max plan"
+      />
+      <SettingsRow icon={TrendingUp} label="Usage" />
 
       <SectionDivider />
 
       {/* Features */}
       <SettingsRow
-        icon="slider.horizontal.3"
+        icon={SlidersHorizontal}
         label="Capabilities"
         href="/(settings)/capabilities"
       />
-      <SettingsRow icon="square.grid.2x2" label="Connectors" />
-      <SettingsRow icon="person.2.circle" label="Permissions" />
+      <SettingsRow icon={LayoutGrid} label="Connectors" />
+      <SettingsRow icon={Users} label="Permissions" />
 
       <SectionDivider />
 
       {/* Preferences */}
-      <SettingsRow
-        icon="circle.lefthalf.filled"
-        label="Appearance"
-        detail="System"
-      />
-      <SettingsRow icon="globe" label="Speech language" detail="EN" />
-      <SettingsRow icon="bell" label="Notifications" />
-      <SettingsRow icon="lock.shield" label="Privacy" />
-      <SettingsRow icon="link" label="Shared links" />
+      <SettingsRow icon={SunMoon} label="Appearance" detail="System" />
+      <SettingsRow icon={Globe} label="Speech language" detail="EN" />
+      <SettingsRow icon={Bell} label="Notifications" />
+      <SettingsRow icon={ShieldCheck} label="Privacy" />
+      <SettingsRow icon={Link2} label="Shared links" />
 
       <SectionDivider />
 
       {/* Toggles */}
       <SettingsToggleRow
-        icon="iphone.radiowaves.left.and.right"
+        icon={Vibrate}
         label="Haptic feedback"
         value={hapticFeedback}
         onValueChange={setHapticFeedback}
@@ -69,18 +88,20 @@ export default function SettingsScreen() {
 
       {/* Log out */}
       <Pressable className="flex-row items-center px-5 py-3.5 gap-4 active:bg-muted">
-        <Image
-          source="sf:rectangle.portrait.and.arrow.right"
-          className="w-5 h-5 text-foreground"
+        <Icon
+          icon={LogOut}
+          className="w-5 h-5 text-foreground dark:text-foreground"
         />
-        <Text className="text-[17px] text-foreground">Log out</Text>
+        <Text className="text-[17px] text-foreground dark:text-foreground">
+          Log out
+        </Text>
       </Pressable>
     </ScrollView>
   );
 }
 
 function SectionDivider() {
-  return <View className="h-px bg-border mx-5" />;
+  return <View className="h-px bg-border dark:bg-border mx-5" />;
 }
 
 function SettingsRow({
@@ -89,21 +110,28 @@ function SettingsRow({
   detail,
   href,
 }: {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   detail?: string;
   href?: string;
 }) {
   const content = (
     <View className="flex-row items-center px-5 py-3.5 gap-4 active:bg-muted">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
-      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
+      <Icon
+        icon={icon}
+        className="w-5 h-5 text-foreground dark:text-foreground"
+      />
+      <Text className="flex-1 text-[17px] text-foreground dark:text-foreground">
+        {label}
+      </Text>
       {detail && (
-        <Text className="text-[15px] text-muted-foreground">{detail}</Text>
+        <Text className="text-[15px] text-muted-foreground dark:text-muted-foreground">
+          {detail}
+        </Text>
       )}
-      <Image
-        source="sf:chevron.right"
-        className="w-3.5 h-3.5 text-muted-foreground"
+      <Icon
+        icon={ChevronRight}
+        className="w-3.5 h-3.5 text-muted-foreground dark:text-muted-foreground"
       />
     </View>
   );
@@ -125,15 +153,20 @@ function SettingsToggleRow({
   value,
   onValueChange,
 }: {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   value: boolean;
   onValueChange: (v: boolean) => void;
 }) {
   return (
     <View className="flex-row items-center px-5 py-3 gap-4">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
-      <Text className="flex-1 text-[17px] text-foreground">{label}</Text>
+      <Icon
+        icon={icon}
+        className="w-5 h-5 text-foreground dark:text-foreground"
+      />
+      <Text className="flex-1 text-[17px] text-foreground dark:text-foreground">
+        {label}
+      </Text>
       <Switch value={value} onValueChange={onValueChange} />
     </View>
   );

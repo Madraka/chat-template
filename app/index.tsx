@@ -14,7 +14,8 @@ import {
   createStreamingStore,
   type ChatMessage,
 } from "@/components/chat";
-import { Image } from "@/components/tw";
+import { Icon } from "@/components/icon";
+import { Plus } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -159,9 +160,9 @@ export default function ChatScreen() {
         <ConversationScrollButton />
         <PromptInput>
           <PromptInputAction onPress={() => router.navigate("/attachments")}>
-            <Image
-              source="sf:plus"
-              className="w-5 h-5 text-muted-foreground font-semibold"
+            <Icon
+              icon={Plus}
+              className="w-5 h-5 text-muted-foreground"
             />
           </PromptInputAction>
           <PromptInputBody>

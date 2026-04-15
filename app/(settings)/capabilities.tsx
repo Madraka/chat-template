@@ -1,4 +1,14 @@
-import { Image } from "@/components/tw";
+import { Icon } from "@/components/icon";
+import {
+  Box,
+  Brain,
+  Check,
+  ChevronRight,
+  FileCog,
+  Globe,
+  Search,
+} from "lucide-react-native";
+import type { LucideIcon } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, Switch, Text, View } from "react-native";
 
@@ -16,21 +26,21 @@ export default function CapabilitiesScreen() {
       contentContainerClassName="pb-10"
     >
       <CapabilityToggle
-        icon="cube"
+        icon={Box}
         label="Artifacts"
         description="Required by code execution"
         value={artifacts}
         onValueChange={setArtifacts}
       />
       <CapabilityToggle
-        icon="doc.badge.gearshape"
+        icon={FileCog}
         label="Code execution and file creation"
         description="Allow Agent to execute code and create and edit docs, spreadsheets, presentations, PDFs, and data reports."
         value={codeExecution}
         onValueChange={setCodeExecution}
       />
       <CapabilityToggle
-        icon="globe"
+        icon={Globe}
         label="Web search"
         description="Agent will automatically search the web when it determines it needs current information"
         value={webSearch}
@@ -42,14 +52,14 @@ export default function CapabilitiesScreen() {
       <SectionHeader title="Memory" />
 
       <CapabilityToggle
-        icon="magnifyingglass"
+        icon={Search}
         label="Search and reference chats"
         description="Allow Agent to search for relevant details in past chats. Learn more."
         value={searchChats}
         onValueChange={setSearchChats}
       />
       <CapabilityToggle
-        icon="brain.head.profile"
+        icon={Brain}
         label="Generate memory from chat history"
         description="Allow Agent to remember relevant context from your chats. This setting controls memory for both chats and projects. Learn more."
         value={generateMemory}
@@ -69,8 +79,8 @@ export default function CapabilitiesScreen() {
             Updated 4d ago from your chats
           </Text>
         </View>
-        <Image
-          source="sf:chevron.right"
+        <Icon
+          icon={ChevronRight}
           className="w-3.5 h-3.5 text-muted-foreground"
         />
       </View>
@@ -113,7 +123,7 @@ function ToolAccessOption({
         )}
       </View>
       {selected && (
-        <Image source="sf:checkmark" className="w-5 h-5 text-blue-500" />
+        <Icon icon={Check} className="w-5 h-5 text-blue-500" />
       )}
     </View>
   );
@@ -126,7 +136,7 @@ function CapabilityToggle({
   value,
   onValueChange,
 }: {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   description?: string;
   value: boolean;
@@ -134,7 +144,7 @@ function CapabilityToggle({
 }) {
   return (
     <View className="flex-row items-center px-5 py-3.5 gap-4">
-      <Image source={`sf:${icon}`} className="w-5 h-5 text-foreground" />
+      <Icon icon={icon} className="w-5 h-5 text-foreground" />
       <View className="flex-1 gap-0.5">
         <Text className="text-[17px] text-foreground">{label}</Text>
         {description && (

@@ -1,15 +1,33 @@
-import { Image } from "@/components/tw";
+import { Icon } from "@/components/icon";
+import {
+  Archive,
+  Camera,
+  ChevronRight,
+  Globe,
+  Image as ImageIcon,
+  File,
+  Paintbrush,
+  Sparkles,
+  Wrench,
+} from "lucide-react-native";
+import type { LucideIcon } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 
-function AttachmentButton({ icon, label }: { icon: string; label: string }) {
+function AttachmentButton({
+  icon,
+  label,
+}: {
+  icon: LucideIcon;
+  label: string;
+}) {
   return (
     <Pressable
       className="flex-1 items-center gap-2 py-3 rounded-xl bg-secondary dark:bg-secondary active:bg-muted"
       style={{ borderCurve: "continuous" }}
     >
-      <Image
-        source={`sf:${icon}`}
+      <Icon
+        icon={icon}
         className="w-6 h-6 text-foreground dark:text-foreground"
       />
       <Text className="text-[13px] text-foreground dark:text-foreground">
@@ -26,7 +44,7 @@ function ToggleRow({
   value,
   onValueChange,
 }: {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   badge?: string;
   value: boolean;
@@ -34,8 +52,8 @@ function ToggleRow({
 }) {
   return (
     <View className="flex-row items-center px-5 py-3 gap-3.5">
-      <Image
-        source={`sf:${icon}`}
+      <Icon
+        icon={icon}
         className="w-5 h-5 text-foreground dark:text-foreground"
       />
       <Text className="flex-1 text-[17px] text-foreground dark:text-foreground">
@@ -59,7 +77,7 @@ function DisclosureRow({
   detail,
   onPress,
 }: {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   detail: string;
   onPress?: () => void;
@@ -69,8 +87,8 @@ function DisclosureRow({
       onPress={onPress}
       className="flex-row items-center px-5 py-3.5 gap-3.5 active:bg-muted"
     >
-      <Image
-        source={`sf:${icon}`}
+      <Icon
+        icon={icon}
         className="w-5 h-5 text-foreground dark:text-foreground"
       />
       <Text className="flex-1 text-[17px] text-foreground dark:text-foreground">
@@ -79,8 +97,8 @@ function DisclosureRow({
       <Text className="text-[15px] text-muted-foreground dark:text-muted-foreground">
         {detail}
       </Text>
-      <Image
-        source="sf:chevron.right"
+      <Icon
+        icon={ChevronRight}
         className="w-3 h-3 text-muted-foreground dark:text-muted-foreground"
       />
     </Pressable>
@@ -95,20 +113,20 @@ export default function AddToChatSheet() {
     <ScrollView className="flex-1 " contentInsetAdjustmentBehavior="automatic">
       {/* Attachment buttons */}
       <View className="flex-row gap-3 px-5 pt-2 pb-4">
-        <AttachmentButton icon="camera" label="Camera" />
-        <AttachmentButton icon="photo.on.rectangle" label="Photos" />
-        <AttachmentButton icon="doc" label="Files" />
+        <AttachmentButton icon={Camera} label="Camera" />
+        <AttachmentButton icon={ImageIcon} label="Photos" />
+        <AttachmentButton icon={File} label="Files" />
       </View>
 
       {/* Toggles */}
       <ToggleRow
-        icon="sparkle.magnifyingglass"
+        icon={Sparkles}
         label="Research"
         value={research}
         onValueChange={setResearch}
       />
       <ToggleRow
-        icon="globe"
+        icon={Globe}
         label="Web search"
         badge="Beta"
         value={webSearch}
@@ -119,9 +137,9 @@ export default function AddToChatSheet() {
       <View className="h-px bg-border dark:bg-border mx-5 my-1" />
 
       {/* Disclosure rows */}
-      <DisclosureRow icon="archivebox" label="Add to project" detail="None" />
-      <DisclosureRow icon="paintbrush" label="Choose style" detail="Normal" />
-      <DisclosureRow icon="wrench" label="Tool access" detail="Auto" />
+      <DisclosureRow icon={Archive} label="Add to project" detail="None" />
+      <DisclosureRow icon={Paintbrush} label="Choose style" detail="Normal" />
+      <DisclosureRow icon={Wrench} label="Tool access" detail="Auto" />
     </ScrollView>
   );
 }

@@ -1,10 +1,12 @@
 import "../global.css";
 import "../utils/css-variables";
 
+import { Icon } from "@/components/icon";
 import { TouchableGlass } from "@/components/touchable-glass";
-import { Image, SafeAreaView } from "@/components/tw";
+import { SafeAreaView } from "@/components/tw";
 import { MOCK_CHATS } from "@/utils/mock-chats";
 import { cn } from "@/utils/tailwind";
+import { Plus } from "lucide-react-native";
 
 import React, { createContext, use, useCallback, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -157,9 +159,9 @@ export function DrawerContent({
           onPress={() => onNavigate("/")}
           className="w-10 h-10 rounded-full bg-foreground dark:bg-foreground active:bg-muted items-center justify-center"
         >
-          <Image
-            source="sf:plus.message"
-            className="text-2xl text-background dark:text-background"
+          <Icon
+            icon={Plus}
+            className="w-6 h-6 text-background dark:text-background"
           />
         </TouchableGlass>
       </View>

@@ -1,8 +1,10 @@
 import { useDrawer } from "@/components/drawer-content";
+import { Icon } from "@/components/icon";
 import { Image } from "@/components/tw";
 import { MOCK_CHATS, type MockChat } from "@/utils/mock-chats";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Color, Link, Stack, useRouter } from "expo-router";
+import { ChevronRight, Search } from "lucide-react-native";
 import { useCallback, useMemo, useState } from "react";
 import { Alert, FlatList, Pressable, Text, View } from "react-native";
 
@@ -43,10 +45,17 @@ function ChatRow({
               {formatTimeAgo(item.daysAgo)}
             </Text>
           </View>
-          <Image
-            source="sf:chevron.right"
-            className="w-2.5 h-4 font-medium text-muted-foreground"
-          />
+          {process.env.EXPO_OS === "ios" ? (
+            <Image
+              source="sf:chevron.right"
+              className="w-2.5 h-4 font-medium text-muted-foreground"
+            />
+          ) : (
+            <Icon
+              icon={ChevronRight}
+              className="w-2.5 h-4 text-muted-foreground"
+            />
+          )}
         </Pressable>
       </Link.Trigger>
 
@@ -71,10 +80,7 @@ function ChatRow({
 function EmptySearch({ query }: { query: string }) {
   return (
     <View className="flex-1 items-center justify-center pt-32 gap-2">
-      <Image
-        source="sf:magnifyingglass"
-        className="w-10 h-10 text-muted-foreground"
-      />
+      <Icon icon={Search} className="w-10 h-10 text-muted-foreground" />
       <Text className="text-[17px] text-muted-foreground text-center px-10">
         No results found for &ldquo;{query}&rdquo;
       </Text>
@@ -172,7 +178,7 @@ export default function ChatsScreen() {
       />
 
       <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button icon="line.horizontal.3" onPress={openDrawer} />
+        <Stack.Toolbar.Button icon="list.bullet" onPress={openDrawer} />
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Menu icon="line.horizontal.3.decrease">
