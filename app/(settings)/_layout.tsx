@@ -6,7 +6,7 @@ import { useCSSVariable } from "uniwind";
 export default function SettingsLayout() {
   const router = useRouter();
 
-  const appForeground = useCSSVariable("--app-foreground");
+  const appForeground = useCSSVariable("--app-foreground") as string;
   return (
     <Stack
       screenOptions={{
