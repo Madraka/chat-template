@@ -6,7 +6,37 @@ import { Image, SafeAreaView } from "@/components/tw";
 import { MOCK_CHATS } from "@/utils/mock-chats";
 import { cn } from "@/utils/tailwind";
 
+import React, { createContext, use, useCallback, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+
+type DrawerContextValue = {
+  isOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+};
+
+const DrawerContext = createContext<DrawerContextValue | null>(null);
+
+export function DrawerProvider({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openDrawer = useCallback(() => setIsOpen(true), []);
+  const closeDrawer = useCallback(() => setIsOpen(false), []);
+
+  return (
+    <DrawerContext value={{ isOpen, openDrawer, closeDrawer }}>
+      {children}
+    </DrawerContext>
+  );
+}
+
+export function useDrawer() {
+  const context = use(DrawerContext);
+  if (!context) {
+    throw new Error("useDrawer must be used within a DrawerProvider");
+  }
+  return context;
+}
 
 function DrawerNavItem({
   label,

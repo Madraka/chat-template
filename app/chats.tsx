@@ -1,4 +1,4 @@
-import { useDrawer } from "@/components/drawer-context";
+import { useDrawer } from "@/components/drawer-content";
 import { Image } from "@/components/tw";
 import { MOCK_CHATS, type MockChat } from "@/utils/mock-chats";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
