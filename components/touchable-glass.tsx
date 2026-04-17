@@ -1,6 +1,6 @@
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import React, { useState } from "react";
-import { TouchableWithoutFeedback } from "react-native";
+import { TouchableWithoutFeedback, type ViewProps } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
@@ -15,6 +15,8 @@ type TouchableGlassProps = GlassViewProps & {
   onPressOut?: () => void;
   disabled?: boolean;
 };
+
+type ViewOnlyProps = ViewProps & { className?: string };
 
 function TouchableGlassNative({
   onPress,
@@ -55,8 +57,15 @@ function TouchableGlassFallback({
   onPressOut,
   ref,
   disabled,
+
+  children,
+  style,
+  className,
   ...rest
 }: TouchableGlassProps) {
+  // Pick only View-compatible props, stripping glass-specific ones
+  const { fallbackTint, fallbackIntensity, glassEffectStyle, tintColor, isInteractive, colorScheme, animatedProps, ...viewProps } = rest as Record<string, unknown>;
+  const safeViewProps = viewProps as ViewOnlyProps;
   const [pressed, setPressed] = useState(false);
   const onTouchBegin = () => {
     setPressed(true);
@@ -83,7 +92,8 @@ function TouchableGlassFallback({
     >
       <Animated.View
         ref={ref}
-        {...(rest as any)}
+        className={className}
+        {...safeViewProps}
         style={[
           {
             overflow: "hidden",
@@ -93,11 +103,11 @@ function TouchableGlassFallback({
           },
           pressed && { transform: [{ scale: 1.1 }] },
           disabled && { opacity: 0.5 },
-          rest.style,
+          style,
         ]}
       >
         <BlurViewRawBackdrop />
-        {rest.children as React.ReactNode}
+        {children as React.ReactNode}
       </Animated.View>
     </TouchableWithoutFeedback>
   );

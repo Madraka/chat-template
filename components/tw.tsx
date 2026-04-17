@@ -4,7 +4,7 @@ import {
   isLiquidGlassAvailable,
 } from "expo-glass-effect";
 import { Image as XImage } from "expo-image";
-import { StyleSheet } from "react-native";
+import { StyleSheet, type ViewStyle } from "react-native";
 import { withUniwind } from "uniwind";
 
 import { KeyboardGestureArea as XKeyboardGestureArea } from "react-native-keyboard-controller";
@@ -23,22 +23,31 @@ const BlurView = withUniwind(EXBlurView);
 export const InnerAppleGlassView = withUniwind(BetterGlassView);
 const GLASS_ENABLED = isLiquidGlassAvailable();
 
-const FallbackAppleGlassView = ({
-  fallbackTint,
-  fallbackIntensity,
-  ...props
-}: React.ComponentProps<typeof AnimatedEXGlassView> & {
+type FallbackAppleGlassViewProps = React.ComponentProps<
+  typeof AnimatedEXGlassView
+> & {
   className?: string;
   fallbackTint?: React.ComponentProps<typeof EXBlurView>["tint"];
   fallbackIntensity?: React.ComponentProps<typeof EXBlurView>["intensity"];
-}) => {
+};
+
+const FallbackAppleGlassView = ({
+  fallbackTint,
+  fallbackIntensity,
+  children,
+  style,
+  className,
+  ...rest
+}: FallbackAppleGlassViewProps) => {
   return (
     <BlurView
-      {...(props as any)}
-      style={[{ overflow: "hidden" }, props.style]}
+      className={className}
+      style={[{ overflow: "hidden" }, StyleSheet.flatten(style) as ViewStyle]}
       tint={fallbackTint}
       intensity={fallbackIntensity}
-    />
+    >
+      {children as React.ReactNode}
+    </BlurView>
   );
 };
 
@@ -58,17 +67,19 @@ function BetterGlassView(
 
 export const GlassView = withUniwind(XGlassView);
 
-function convertStylesToProps(style: any, move: Record<string, string>) {
+function convertStylesToProps(
+  style: React.ComponentProps<typeof AnimatedEXGlassView>["style"],
+  move: Record<string, string>,
+) {
   if (!style) {
-    return { style: style, props: {} };
+    return { style, props: {} as Record<string, unknown> };
   }
-  const flatStyle = StyleSheet.flatten(style) || {};
-
-  const props: Record<string, any> = {};
+  const flatStyle = (StyleSheet.flatten(style) || {}) as Record<string, unknown>;
+  const props: Record<string, unknown> = {};
 
   for (const [styleKey, propKey] of Object.entries(move)) {
     if (styleKey in flatStyle) {
-      (props as any)[propKey] = (flatStyle as any)[styleKey];
+      props[propKey] = flatStyle[styleKey];
       delete flatStyle[styleKey];
     }
   }
