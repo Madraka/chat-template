@@ -4,6 +4,7 @@ import { Stack, useRouter } from "expo-router";
 import { useCSSVariable } from "uniwind";
 
 const GLASS = isLiquidGlassAvailable();
+const IS_ANDROID = process.env.EXPO_OS === "android";
 
 export default function SettingsLayout() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function SettingsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTransparent: GLASS,
+        headerTransparent: GLASS || IS_ANDROID,
         headerLargeTitleShadowVisible: false,
         headerBackButtonDisplayMode: GLASS ? "minimal" : "default",
         headerTintColor: appForeground,

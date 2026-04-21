@@ -166,7 +166,7 @@ function StackLayout() {
       <Stack.Screen
         name="(settings)"
         options={{
-          presentation: "modal",
+          presentation: IS_ANDROID ? undefined : "modal",
           headerShown: false,
         }}
       />
