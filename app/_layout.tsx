@@ -23,6 +23,7 @@ import { useColorScheme } from "react-native";
 import { useCSSVariable } from "uniwind";
 
 const GLASS = isLiquidGlassAvailable();
+const IS_ANDROID = process.env.EXPO_OS === "android";
 const MODELS = [
   {
     id: "opus-4.6",
@@ -109,7 +110,7 @@ function StackLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTransparent: GLASS,
+        headerTransparent: GLASS || IS_ANDROID,
         headerBackButtonDisplayMode: GLASS ? "minimal" : "default",
         headerTintColor: appForeground,
       }}
@@ -156,6 +157,8 @@ function StackLayout() {
           title: "Add to chat",
           presentation: "formSheet",
           sheetAllowedDetents: [0.55],
+          // following https://m3.material.io/components/bottom-sheets/specs
+          sheetCornerRadius: IS_ANDROID ? 28 : undefined,
           sheetGrabberVisible: true,
           headerTransparent: GLASS,
           headerLargeTitleShadowVisible: false,
