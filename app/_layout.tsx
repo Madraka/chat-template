@@ -92,10 +92,10 @@ function RootDrawer() {
         <DrawerContent
           onNavigate={(path) => {
             closeDrawer();
-            router.replace(path as any, { withAnchor: true });
+            router.replace(path, { withAnchor: true });
           }}
           onOpenModal={(path) => {
-            router.navigate(path as any);
+            router.navigate(path);
           }}
         />
       }
