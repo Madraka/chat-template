@@ -1,16 +1,17 @@
 import { Icon } from "@/components/icon";
+import type { LucideIcon } from "lucide-react-native";
 import {
   Archive,
   Camera,
   ChevronRight,
+  File,
   Globe,
   Image as ImageIcon,
-  File,
+  Minus,
   Paintbrush,
   Sparkles,
   Wrench,
 } from "lucide-react-native";
-import type { LucideIcon } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, Switch, Text, View } from "react-native";
 
@@ -111,6 +112,15 @@ export default function AddToChatSheet() {
 
   return (
     <ScrollView className="flex-1 " contentInsetAdjustmentBehavior="automatic">
+      {process.env.EXPO_OS === "android" && (
+        <View className="items-center pt-2 pb-1">
+          <Icon
+            icon={Minus}
+            strokeWidth={4}
+            className="w-8 h-8 text-muted-foreground"
+          />
+        </View>
+      )}
       {/* Attachment buttons */}
       <View className="flex-row gap-3 px-5 pt-2 pb-4">
         <AttachmentButton icon={Camera} label="Camera" />
