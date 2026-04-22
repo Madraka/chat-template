@@ -4,11 +4,14 @@ import { Stack, useRouter } from "expo-router";
 import { useCSSVariable } from "uniwind";
 
 const GLASS = isLiquidGlassAvailable();
+const IS_ANDROID = process.env.EXPO_OS === "android";
 
 export default function SettingsLayout() {
   const router = useRouter();
 
   const appForeground = useCSSVariable("--app-foreground") as string;
+  const appBackground = useCSSVariable("--app-background") as string;
+
   return (
     <Stack
       screenOptions={{
@@ -16,6 +19,12 @@ export default function SettingsLayout() {
         headerLargeTitleShadowVisible: false,
         headerBackButtonDisplayMode: GLASS ? "minimal" : "default",
         headerTintColor: appForeground,
+        headerShadowVisible: IS_ANDROID ? false : undefined,
+        headerStyle: IS_ANDROID
+          ? {
+              backgroundColor: appBackground,
+            }
+          : undefined,
       }}
     >
       <Stack.Screen
