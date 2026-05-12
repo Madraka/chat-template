@@ -1,3 +1,4 @@
+import { ArrowUp, Paperclip } from "lucide-react";
 import { Children, type ReactNode, isValidElement } from "react";
 import {
   ActivityIndicator,
@@ -6,7 +7,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { ArrowUp, Paperclip } from "lucide-react";
 
 import { useChatContext } from "./chat-context";
 import { useConversationContext } from "./conversation";
@@ -96,7 +96,7 @@ export function PromptInputBody({ children }: { children: ReactNode }) {
           </Pressable>
           {/* Model selector mock */}
           <Pressable className="flex h-7 flex-row items-center gap-1.5 rounded-lg px-2 transition-colors hover:bg-accent">
-            <Text className="text-[12px] text-muted-foreground">GPT-4o</Text>
+            <Text className="text-[12px] text-muted-foreground">Opus</Text>
           </Pressable>
         </View>
         {submit}
@@ -165,9 +165,7 @@ export function PromptInputSubmit() {
         <ArrowUp
           size={16}
           strokeWidth={2.5}
-          className={
-            disabled ? "text-muted-foreground/25" : "text-background"
-          }
+          className={disabled ? "text-muted-foreground/25" : "text-background"}
         />
       )}
     </Pressable>

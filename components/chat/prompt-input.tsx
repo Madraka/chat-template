@@ -6,7 +6,7 @@ import {
   isLiquidGlassAvailable,
 } from "expo-glass-effect";
 import { useEffect, useRef, type ReactNode } from "react";
-import { ActivityIndicator, Pressable, TextInput } from "react-native";
+import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { cn } from "@/utils/tailwind";
@@ -23,12 +23,14 @@ const AnimatedGlassContainer = Animated.createAnimatedComponent(GlassContainer);
  */
 export function PromptInput({ children }: { children: ReactNode }) {
   const { promptInputStyle, onPromptInputLayout } = useConversationContext();
+  const { error } = useChatContext();
 
   return (
     <Animated.View
       onLayout={onPromptInputLayout}
       style={[{ position: "absolute", left: 0, right: 0 }, promptInputStyle]}
     >
+      {error && <PromptInputError message={error.message} />}
       <AnimatedGlassContainer
         style={{
           flex: 1,
@@ -41,6 +43,28 @@ export function PromptInput({ children }: { children: ReactNode }) {
       >
         {children}
       </AnimatedGlassContainer>
+    </Animated.View>
+  );
+}
+
+function PromptInputError({ message }: { message?: string }) {
+  return (
+    <Animated.View entering={FadeIn.duration(200)} className="px-3 pb-2">
+      <View
+        className="flex-row items-center gap-2 rounded-xl bg-card px-3 py-2.5"
+        style={{ borderCurve: "continuous" }}
+      >
+        <View
+          className="w-2 h-2 rounded-full"
+          style={{ backgroundColor: "#EF4444" }}
+        />
+        <Text
+          className="flex-1 text-xs text-muted-foreground"
+          numberOfLines={2}
+        >
+          {message || "Something went wrong"}
+        </Text>
+      </View>
     </Animated.View>
   );
 }

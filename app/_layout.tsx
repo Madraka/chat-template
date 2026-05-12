@@ -11,6 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "../global.css";
 import "../utils/css-variables";
+import "../utils/fetch-polyfill";
 
 import { ModelProvider } from "@/components/model-context";
 import {

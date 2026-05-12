@@ -9,6 +9,7 @@ export type ChatContextValue = {
   isGenerating: boolean;
   onSend: () => void;
   streamingStore: StreamingStore;
+  error?: Error | null;
 };
 
 const ChatContext = createContext<ChatContextValue | null>(null);

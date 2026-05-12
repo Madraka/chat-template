@@ -66,6 +66,7 @@ function useAIChat() {
     messages: uiMessages,
     sendMessage,
     status,
+    error,
   } = useChat();
 
   const isStreaming = status === "streaming";
@@ -119,6 +120,7 @@ function useAIChat() {
     isGenerating: isStreaming,
     onSend,
     streamingStore,
+    error: error ?? null,
   };
 }
 

@@ -1,11 +1,11 @@
-import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { convertToModelMessages, streamText } from "ai";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, model } = await req.json();
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: anthropic(model ?? "claude-haiku-4-5-20251001"),
     messages: await convertToModelMessages(messages),
   });
 

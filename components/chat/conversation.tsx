@@ -298,6 +298,7 @@ export function Conversation({
   );
 }
 
+
 export function ConversationScrollButton() {
   const { scrollToBottom, scrollButtonStyle } = useConversationContext();
 
