@@ -29,6 +29,21 @@ A high-performance AI chatbot template built with [Expo](https://expo.dev) and [
 
 ## Getting Started
 
+### Environment Variables
+
+Copy `.env.example` to `.env` and fill in the values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+| --- | --- |
+| `ANTHROPIC_API_KEY` | Your [Anthropic API key](https://console.anthropic.com/settings/keys). Used by the server-side chat API route (`app/api/chat+api.ts`) via `@ai-sdk/anthropic`. |
+| `EXPO_PUBLIC_MOCK_AI` | Set to `1` to use mock streaming responses instead of calling the Anthropic API. Useful for UI development without an API key. |
+
+### Install & Run
+
 ```bash
 # Install dependencies
 bun install
