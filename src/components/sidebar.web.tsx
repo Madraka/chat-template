@@ -86,12 +86,15 @@ export function Sidebar({
   return (
     <>
       {/* Mobile overlay */}
-      {isOpen && (
-        <Pressable
-          onPress={onToggle}
-          className="fixed inset-0 z-40 bg-black/30 md:hidden"
-        />
-      )}
+      <Pressable
+        onPress={onToggle}
+        aria-hidden={!isOpen}
+        className={`fixed inset-0 z-40 bg-black/30 md:hidden ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        // @ts-expect-error: Web-only CSS transition property
+        style={{ transition: "opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1)" }}
+      />
 
       {/* Sidebar */}
       <View
@@ -104,7 +107,8 @@ export function Sidebar({
           width: isCollapsed ? 48 : 280,
           overflow: "hidden",
           // @ts-expect-error: Web-only CSS transition property
-          transition: "width 0.3s cubic-bezier(0.32, 0.72, 0, 1)",
+          transition:
+            "width 0.3s cubic-bezier(0.32, 0.72, 0, 1), translate 0.3s cubic-bezier(0.32, 0.72, 0, 1)",
         }}
       >
         {/* Header */}
