@@ -34,28 +34,44 @@ export function MainHeader() {
   const { openDrawer } = useDrawer();
   return (
     <>
+      {process.env.EXPO_OS === "ios" ? (
+        <Stack.Toolbar placement="left">
+          <Stack.Toolbar.Button icon="list.bullet" onPress={openDrawer} />
+        </Stack.Toolbar>
+      ) : (
+        // TODO: Migrate to unified Toolbar support for Android in SDK 56
+        <Stack.Toolbar placement="left" asChild>
+          <Pressable
+            onPress={openDrawer}
+            accessibilityLabel="Open drawer"
+            accessibilityRole="button"
+            className="p-2 -ml-1 active:opacity-60"
+          >
+            <Icon icon={Menu} className="w-6 h-6 text-foreground" />
+          </Pressable>
+        </Stack.Toolbar>
+      )}
+
       <Stack.Screen.Title asChild>
         <HeaderTitleMenu />
       </Stack.Screen.Title>
-      <Stack.Toolbar placement="left" asChild>
-        <Pressable
-          onPress={openDrawer}
-          accessibilityLabel="Open drawer"
-          accessibilityRole="button"
-          className="p-2 -ml-1 active:opacity-60"
-        >
-          <Icon icon={Menu} className="w-6 h-6 text-foreground" />
-        </Pressable>
-      </Stack.Toolbar>
-      <Stack.Toolbar placement="right" asChild>
-        <Pressable
-          accessibilityLabel="Reader"
-          accessibilityRole="button"
-          className="p-2 -mr-1 active:opacity-60"
-        >
-          <Icon icon={Glasses} className="w-6 h-6 text-foreground" />
-        </Pressable>
-      </Stack.Toolbar>
+
+      {process.env.EXPO_OS === "ios" ? (
+        <Stack.Toolbar placement="right">
+          <Stack.Toolbar.Button icon="eyeglasses" />
+        </Stack.Toolbar>
+      ) : (
+        // TODO: Migrate to unified Toolbar support for Android in SDK 56
+        <Stack.Toolbar placement="right" asChild>
+          <Pressable
+            accessibilityLabel="Reader"
+            accessibilityRole="button"
+            className="p-2 -mr-1 active:opacity-60"
+          >
+            <Icon icon={Glasses} className="w-6 h-6 text-foreground" />
+          </Pressable>
+        </Stack.Toolbar>
+      )}
     </>
   );
 }
