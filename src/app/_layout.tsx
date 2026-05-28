@@ -5,7 +5,6 @@ import {
 } from "@/components/drawer-content";
 import { DrawerLayout } from "@/components/drawer-layout";
 import "@/global.css";
-import "@/utils/fetch-polyfill";
 import { useSystemBackgroundColor } from "@/utils/use-system-background-color";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Stack, useRouter } from "expo-router";
